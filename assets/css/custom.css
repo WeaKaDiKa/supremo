@@ -1,0 +1,288 @@
+html {
+    margin: 0;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex-grow: 1;
+}
+
+.lilita {
+    font-family: "Lilita One", serif !important;
+}
+
+.nav-larger {
+    font-size: large;
+}
+
+.light-accent-bg {
+    background-color: #f6e8d0;
+}
+
+.mid-accent-bg {
+    background-color: #d3a153;
+}
+
+.dark-accent-bg {
+    background-color: #7d543a;
+}
+
+.darker-accent-bg {
+    background-color: #573a27;
+}
+
+.light-accent-fg {
+    color: #f6e8d0;
+}
+
+.dark-accent-fg {
+    color: #7d543a;
+}
+
+.mid-accent-fg {
+    color: #d3a153;
+}
+
+.light-accent-border {
+    border-color: #f6e8d0;
+}
+
+.dark-accent-border {
+    border-color: #7d543a;
+}
+
+.mid-accent-border {
+    border-color: #d3a153;
+}
+
+.carousel-item {
+    position: relative;
+}
+
+.btn {
+    transition: background-color 0.3s ease-in-out;
+}
+
+.btn:hover {
+    background-color: #7d543a !important;
+    color: white;
+}
+
+.btn-outline-dark-accent {
+    color: #7d543a;
+    /* Default Bootstrap primary color */
+    border: 1px solid #7d543a;
+    background-color: transparent;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-outline-dark-accent:hover,
+.btn-outline-dark-accent:focus,
+.btn-outline-dark-accent:active {
+    color: #fff;
+    background-color: #7d543a;
+    border-color: #7d543a;
+}
+
+
+/* Dark overlay */
+.carousel-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    /* 50% black overlay */
+    z-index: 1;
+}
+
+.carousel-item img {
+    height: 75vh;
+    /* Ensure images cover at least half of the screen */
+    object-fit: cover;
+    /* Prevents image distortion */
+}
+
+.carousel-caption {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+    width: 100%;
+    z-index: 2;
+    /* Ensures text is above the overlay */
+}
+
+.carousel-control-next {
+    z-index: 2;
+}
+
+.carousel-control-prev {
+    z-index: 2;
+}
+
+.carousel-caption h1,
+.carousel-caption h2 {
+    margin: 0;
+}
+
+.back-to-top {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    text-decoration: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.14);
+}
+
+/* Social Media Icons - Vertical */
+.social-icons {
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Centering Content */
+.footer .col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+
+
+.footer-icon {
+    color: #7d543a;
+
+}
+.pic-bg {
+    background-image: url('../../assets/img/a.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: -2;
+}
+
+/* Dark Overlay */
+.pic-bg::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
+
+.pic-dog-bg-adopt {
+    background-image: url('../../assets/img/j.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 1;
+}
+
+.pic-dog-bg-adopt::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    /* Adjust opacity (0.5 = 50% dark) */
+    z-index: 2;
+}
+
+
+.pic-cat-bg-adopt {
+    background-image: url('../../assets/img/b.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 1;
+
+
+}
+
+.pic-cat-bg-adopt::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    /* Adjust opacity (0.5 = 50% dark) */
+    z-index: 2;
+}
+
+
+
+
+/* Rotated Title Banner */
+.title-banner {
+    position: absolute;
+    top: -0px;
+    left: -40px;
+    background-color: #573a27;
+    color: #fff;
+    padding: 10px 30px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    transform: rotate(-15deg);
+    width: 200px;
+    text-align: center;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.special-label {
+    font-family: "Bebas Neue", serif;
+    font-weight: 400;
+    font-style: bold;
+    margin-bottom: 0 !important;
+}
+
+.no-border {
+    outline: 0;
+    border-width: 0 0 2px;
+}
+
+.square-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    /* Ensures a perfect square */
+    overflow: hidden;
+    /* Hides overflowing parts of the image */
+}
+
+.square-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Zooms in and fills the square */
+}
+
+.modal-body {
+    max-height: 70vh;
+    /* Limits height to 70% of the viewport */
+    overflow-y: auto;
+    /* Enables scrolling */
+}
