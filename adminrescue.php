@@ -3,7 +3,7 @@ require_once('db/server.php');
 require_once('db/adminloginverify.php');
 
 // Fetch rescue records
-$sql = "SELECT rescueid, pet_type, pet_condition, location, picurl, fname, lname, additional, status FROM rescue LEFT JOIN user ON rescue.userid = user.userid";
+$sql = "SELECT rescueid, pet_type, pet_condition, location, picurl, fname, lname, additional, rescue.status FROM rescue LEFT JOIN user ON rescue.userid = user.userid";
 $result = $conn->query($sql);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submitPet'])) {
@@ -110,9 +110,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submitPet'])) {
                                                 <td><?= ucfirst(htmlspecialchars($row['pet_type'])); ?></td>
                                                 <td><?= htmlspecialchars($row['pet_condition']); ?></td>
                                                 <td><?= htmlspecialchars($row['location']); ?></td>
-                                                <td><?= htmlspecialchars($row['fname']); ?>
-                                                    <?= htmlspecialchars($row['lname']); ?>
+                                                <td>
+                                                    <?php
+                                                    $fname = $row['fname'] ?? '';
+                                                    $lname = $row['lname'] ?? '';
+
+                                                    if (empty($fname) && empty($lname)) {
+                                                        echo 'User Removed';
+                                                    } else {
+                                                        echo htmlspecialchars(trim("$fname $lname"));
+                                                    }
+                                                    ?>
                                                 </td>
+
                                                 <td><?= ucfirst(htmlspecialchars($row['status'])); ?></td>
                                                 <td class="text-center">
                                                     <!-- Add data-src attribute -->
@@ -212,8 +222,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submitPet'])) {
                                 <div class="form-group mb-3">
                                     <label for="status">Status <span class="text-danger">*</span></label>
                                     <select class="form-control" id="status" name="status" required>
-                                        <option value="available">Available</option>
-                                        <option value="adopted">Adopted</option>
+                                        <option value="pending">Pending</option>
+
                                         <option value="rescued">Rescued</option>
                                     </select>
                                 </div>

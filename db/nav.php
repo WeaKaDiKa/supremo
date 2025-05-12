@@ -101,7 +101,15 @@
                 <div class="d-flex align-items-center">
                     <?php
 
-                 
+                    $appResult = mysqli_query($conn, "SELECT COUNT(*) AS total FROM applicant WHERE status = 'New'");
+                    $appRow = mysqli_fetch_assoc($appResult);
+                    $appCount = $appRow['total'] ?? 0;
+
+
+                    $reportResult = mysqli_query($conn, "SELECT COUNT(*) AS total FROM rescue WHERE status = 'pending'");
+                    $reportRow = mysqli_fetch_assoc($reportResult);
+                    $reportCount = $reportRow['total'] ?? 0;
+
                     // Total notifications
                     $totalNotifications = $appCount + $reportCount;
                     ?>

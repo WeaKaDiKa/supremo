@@ -45,18 +45,18 @@ $updateStmt->bind_param("i", $userid);
 
 if ($updateStmt->execute()) {
     // Auto-login
-    $_SESSION['auth'] = true;
+  /*   $_SESSION['auth'] = true;
     $_SESSION['userid'] = $user['userid'];
     $_SESSION['userfname'] = $user['fname'];
     $_SESSION['usermname'] = $user['mname'];
     $_SESSION['userlname'] = $user['lname'];
-    $_SESSION['useremail'] = $user['email'];
+    $_SESSION['useremail'] = $user['email']; */
 
-    $_SESSION['errorMessage'] = "Account activated and signed in successfully!";
+    $_SESSION['errorMessage'] = "Account activated successfully!";
     $_SESSION['errorType'] = "success";
     $_SESSION['errorHead'] = "Welcome!";
 
-    header("Location: index.php");
+    header("Location: signin.php");
 } else {
     $_SESSION['errorMessage'] = "An error occurred while activating your account.";
     $_SESSION['errorType'] = "danger";
