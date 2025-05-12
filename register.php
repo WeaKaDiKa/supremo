@@ -1,5 +1,6 @@
 <?php
 require_once('db/server.php');
+require_once('db/sendmail.php');
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registerbtn'])) {
     $fname = trim($_POST['first_name']);
     $mname = trim($_POST['middle_name']);
