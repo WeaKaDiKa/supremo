@@ -1,51 +1,60 @@
 <?php
 require_once('db/server.php');
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['loginbtn'])) {
 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['loginbtn'])) {
     $email = trim($_POST['email']);
     $password = $_POST['password'];
 
-    $sql = "SELECT userid, password FROM user WHERE email = ?";
+    $sql = "SELECT userid, fname, mname, lname, email, password, status, token FROM user WHERE email = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows === 1) {
-        $row = $result->fetch_assoc();
-        if (password_verify($password, $row['password'])) {
-            $_SESSION['userid'] = $row['userid'];
+        $user = $result->fetch_assoc();
+
+        // Check if account is active
+        if ($user['status'] !== 'Active') {
+            $_SESSION['errorMessage'] = "Your account is not yet activated. <a href='resend.php?email=" . urlencode($user['email']) . "' class='text-decoration-underline'>Click here to resend verification email</a>.";
+            $_SESSION['errorType'] = "warning";
+            $_SESSION['errorHead'] = "Account Not Activated!";
+            header("Location: signin.php");
+            exit();
+        }
+
+        // Check password
+        if (password_verify($password, $user['password'])) {
+            $_SESSION['userid'] = $user['userid'];
             $_SESSION['logintype'] = "client";
+            $_SESSION['userfname'] = $user['fname'];
+            $_SESSION['usermname'] = $user['mname'];
+            $_SESSION['userlname'] = $user['lname'];
+            $_SESSION['useremail'] = $user['email'];
             $_SESSION['errorMessage'] = "Login Successful";
             $_SESSION['errorType'] = "success";
             $_SESSION['errorHead'] = "Success!";
 
-            // Determine redirection based on 'next'
-            $next = isset($_GET['next']) ? $_GET['next'] : '';
+            // Determine redirection
+            $next = $_GET['next'] ?? '';
             switch ($next) {
-                case 'donate':
-                    header("Location: donate.php");
-                    break;
-                case 'volunteer':
-                    header("Location: visit.php");
-                    break;
-                case 'adopt':
-                    header("Location: adopthome.php");
-                    break;
-                default:
-                    header("Location: index.php");
-                    break;
+                case 'donate': header("Location: donate.php"); break;
+                case 'volunteer': header("Location: visit.php"); break;
+                case 'adopt': header("Location: adopthome.php"); break;
+                default: header("Location: index.php"); break;
             }
             exit();
         }
-    } else {
-        $_SESSION['errorMessage'] = "Wrong Credentials";
-        $_SESSION['errorType'] = "danger";
-        $_SESSION['errorHead'] = "Warning!";
-        header("Location: signin.php");
-        exit();
     }
+
+    // If login fails
+    $_SESSION['errorMessage'] = "Wrong email or password.";
+    $_SESSION['errorType'] = "danger";
+    $_SESSION['errorHead'] = "Warning!";
+    header("Location: signin.php");
+    exit();
 }
+?>
 
 
 ?>

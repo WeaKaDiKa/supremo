@@ -1,6 +1,7 @@
 <?php
 require_once('db/server.php');
 require_once('db/sendmail.php');
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registerbtn'])) {
     $fname = trim($_POST['first_name']);
     $mname = trim($_POST['middle_name']);
@@ -12,39 +13,72 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registerbtn'])) {
     $gender = $_POST['gender'];
     $bday = $_POST['birthday'];
 
-    $check_sql = "SELECT userid FROM user WHERE email = ?";
+    // Check if email already exists
+    $check_sql = "SELECT userid, status FROM user WHERE email = ?";
     $check_stmt = $conn->prepare($check_sql);
     $check_stmt->bind_param("s", $email);
     $check_stmt->execute();
     $check_result = $check_stmt->get_result();
 
     if ($check_result->num_rows > 0) {
-        $_SESSION['errorMessage'] = "Email already registered.";
-        $_SESSION['errorType'] = "danger";
-        $_SESSION['errorHead'] = "Warning!";
-    } else {
-        $sql = "INSERT INTO user (fname, mname, lname, email, phone, address, password, gender, bday) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssssssss", $fname, $mname, $lname, $email, $phone, $address, $password, $gender, $bday);
-
-        if ($stmt->execute()) {
-            $_SESSION['errorMessage'] = "Registration successful! Please log in.";
-            $_SESSION['errorType'] = "success";
-            $_SESSION['errorHead'] = "Success!";
-            if (isset($_GET['next'])) {
-                header("Location: signin.php?next=" . urlencode($_GET['next']));
-            } else {
-                header("Location: signin.php");
-            }
-            exit();
+        $row = $check_result->fetch_assoc();
+        if ($row['status'] === 'inactive') {
+            // Delete the inactive account
+            $delete_sql = "DELETE FROM user WHERE userid = ?";
+            $delete_stmt = $conn->prepare($delete_sql);
+            $delete_stmt->bind_param("i", $row['userid']);
+            $delete_stmt->execute();
         } else {
-            $_SESSION['errorMessage'] = "Registration failed. Try again.";
+            $_SESSION['errorMessage'] = "This email is already registered and verified.";
             $_SESSION['errorType'] = "danger";
-            $_SESSION['errorHead'] = "Error!";
+            $_SESSION['errorHead'] = "Warning!";
+            header("Location: register.php");
+            exit();
         }
     }
+
+    $token = bin2hex(random_bytes(10));
+    $fullname = $fname . ' ' . $lname;
+
+    $subject = "Verify Your Account";
+    $message = "
+        <p>Hello <strong>$fullname</strong>,</p>
+        <p>Thank you for registering. Please click the button below to verify your email:</p>
+        <p style='text-align:center; margin: 20px 0;'>
+            <a href='https://supremofurbabies.great-site.net/verifyregister.php?token=$token' style='
+                background-color: #d9a85b;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 5px;
+                text-decoration: none;
+                font-weight: bold;
+            '>VERIFY EMAIL</a>
+        </p>
+        <p>If you did not register, please ignore this email.</p>
+    ";
+
+    sendmail($email, $fullname, $subject, $message);
+
+    // Insert new user with status Inactive
+    $insert_sql = "INSERT INTO user (fname, mname, lname, email, phone, address, password, gender, bday, token) 
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($insert_sql);
+    $stmt->bind_param("ssssssssss", $fname, $mname, $lname, $email, $phone, $address, $password, $gender, $bday, $token);
+
+    if ($stmt->execute()) {
+        $_SESSION['errorMessage'] = "Registration successful! Please check your email to verify your account.";
+        $_SESSION['errorType'] = "success";
+        $_SESSION['errorHead'] = "Success!";
+        header("Location: signin.php");
+        exit();
+    } else {
+        $_SESSION['errorMessage'] = "Registration failed. Try again.";
+        $_SESSION['errorType'] = "danger";
+        $_SESSION['errorHead'] = "Error!";
+    }
 }
+?>
+
 
 ?>
 <!DOCTYPE html>
