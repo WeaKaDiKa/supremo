@@ -97,8 +97,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submitPet'])) {
                                         <th>Condition</th>
                                         <th>Location</th>
 
+                                        
                                         <th>User</th>
-                                        <th>Status</th>
+                                        <th>Status</th> 
                                         <th>Action</th>
                                     </tr>
                                 </thead>
