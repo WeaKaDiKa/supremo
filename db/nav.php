@@ -113,17 +113,17 @@
                     // Total notifications
                     $totalNotifications = $appCount + $reportCount;
                     ?>
-                    <li class="nav-item me-4">
+                  <!--   <li class="nav-item me-4">
                         <div class="notification-bell position-relative">
                             <i class="bi bi-bell-fill" style="font-size: 1.5rem; color: #ffc50f;"></i>
-                            <?php if ($totalNotifications > 0): ?>
+                            <?php //if ($totalNotifications > 0): ?>
                                 <span
                                     class="badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    <?= $totalNotifications ?>
+                                    ?= $totalNotifications ?>
                                 </span>
-                            <?php endif; ?>
+                            <?php //endif; ?>
                         </div>
-                    </li>
+                    </li> -->
 
                     <li class="nav-item me-2">
 

@@ -2,44 +2,72 @@
 require_once('db/server.php');
 require_once('db/adminloginverify.php');
 
+require_once('db/sendmail.php');
 // Fetch rescue records
 $sql = "SELECT rescueid, pet_type, pet_condition, location, picurl, fname, lname, additional, rescue.status FROM rescue LEFT JOIN user ON rescue.userid = user.userid";
 $result = $conn->query($sql);
-
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submitPet'])) {
     $rescueid = $_POST['rescueid'];
-    $name = $_POST['name'];
+    $status = $_POST['status'];
+
+    $stmtUser = $conn->prepare("
+        SELECT u.email, u.fname 
+        FROM rescue r 
+        JOIN user u ON r.userid = u.userid 
+        WHERE r.rescueid = ?
+    ");
+    $stmtUser->bind_param("i", $rescueid);
+    $stmtUser->execute();
+    $resultUser = $stmtUser->get_result();
+    $user = $resultUser->fetch_assoc();
+    $email = $user['email'];
+    $name = $user['fname'];
+    $stmtUser->close();
+
+    if ($status === 'notrescued') {
+        $stmt = $conn->prepare("UPDATE rescue SET status = 'notrescued' WHERE rescueid = ?");
+        $stmt->bind_param("i", $rescueid);
+        $stmt->execute();
+
+        // Send email for not rescued
+        $subject = "Rescue Status Update";
+        $message = "Hello $name,\n\nWe regret to inform you that the animal you reported could not be rescued. Thank you for your concern and support.";
+        sendmail($email, $name, $subject, $message);
+
+        $_SESSION['errorMessage'] = "Rescue marked as not rescued.";
+        $_SESSION['errorType'] = "success";
+        $_SESSION['errorHead'] = "Updated!";
+        header("Location: adminrescue.php");
+        exit();
+    }
+
+    $namepet = $_POST['name']; 
     $gender = $_POST['gender'];
     $age = $_POST['age'];
     $description = $_POST['description'];
     $color = $_POST['color'];
-    $status = $_POST['status'];
     $pet_condition = $_POST['pet_condition'];
     $spayed = $_POST['spayed'];
     $type = $_POST['type'];
 
-    // Insert into pet table
     $stmt = $conn->prepare("INSERT INTO pet (name, gender, age, description, color, status, pet_condition, spayed, type) 
                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssssss", $name, $gender, $age, $description, $color, $status, $pet_condition, $spayed, $type);
+    $stmt->bind_param("sssssssss", $namepet, $gender, $age, $description, $color, $status, $pet_condition, $spayed, $type);
 
     if ($stmt->execute()) {
-        // Get the inserted pet ID
         $petid = $stmt->insert_id;
+
         $stmt3 = $conn->prepare("UPDATE rescue SET status = 'rescued' WHERE rescueid = ?");
         $stmt3->bind_param("i", $rescueid);
         $stmt3->execute();
 
-        // Handle Multiple Image Uploads
         if (!empty($_FILES["petpics"]["name"][0])) {
-            $target_dir = "assets/img/uploads/pets/"; // Folder to store images
-
+            $target_dir = "assets/img/uploads/pets/";
             foreach ($_FILES["petpics"]["name"] as $key => $value) {
                 $file_name = time() . "_" . basename($_FILES["petpics"]["name"][$key]);
                 $target_file = $target_dir . $file_name;
 
                 if (move_uploaded_file($_FILES["petpics"]["tmp_name"][$key], $target_file)) {
-                    // Save filename to petpics table
                     $stmt2 = $conn->prepare("INSERT INTO petpics (petid, picurl) VALUES (?, ?)");
                     $stmt2->bind_param("is", $petid, $file_name);
                     $stmt2->execute();
@@ -47,11 +75,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submitPet'])) {
             }
         }
 
+        // Send email for rescued
+        $subject = "Rescue Status Update";
+        $message = "Hello $name,\n\nGood news! The animal you reported has been successfully rescued. Thank you for your report!";
+        sendmail($email, $name, $subject, $message);
 
         $_SESSION['errorMessage'] = "Pet and images saved successfully";
         $_SESSION['errorType'] = "success";
         $_SESSION['errorHead'] = "Success!";
-
     } else {
         $_SESSION['errorMessage'] = "Error saving pet";
         $_SESSION['errorType'] = "danger";
@@ -62,6 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submitPet'])) {
     header("Location: adminrescue.php");
     exit();
 }
+
 
 ?>
 <!DOCTYPE html>
@@ -97,9 +129,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submitPet'])) {
                                         <th>Condition</th>
                                         <th>Location</th>
 
-                                        
+
                                         <th>User</th>
-                                        <th>Status</th> 
+                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -124,7 +156,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submitPet'])) {
                                                     ?>
                                                 </td>
 
-                                                <td><?= ucfirst(htmlspecialchars($row['status'])); ?></td>
+                                                <td>
+                                                    <?= $row['status'] === 'notrescued'
+                                                        ? 'Unable to Rescue'
+                                                        : ucfirst(htmlspecialchars($row['status'])); ?>
+                                                </td>
+
                                                 <td class="text-center">
                                                     <!-- Add data-src attribute -->
                                                     <button type="button" class="btn dark-accent-bg text-white btn-sm openModal"
@@ -183,6 +220,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submitPet'])) {
                             <hr>
                             <h4 class="lilita">Rescue Pet Form</h4>
                             <form method="post" enctype="multipart/form-data">
+                                <!-- Status -->
+                                <div class="form-group mb-3">
+                                    <label for="status">Status <span class="text-danger">*</span></label>
+                                    <select class="form-control" id="status" name="status" required>
+                                        <option value="pending" disabled>Pending</option>
+
+                                        <option value="rescued">Rescued</option>
+                                        <option value="notrescued">Can't be Rescued</option>
+                                    </select>
+                                </div>
+
                                 <!-- Name -->
 
                                 <input type="hidden" name="rescueid" id="rescueid" required>
@@ -219,15 +267,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submitPet'])) {
                                     <input type="text" class="form-control" id="color" name="color" required>
                                 </div>
 
-                                <!-- Status -->
-                                <div class="form-group mb-3">
-                                    <label for="status">Status <span class="text-danger">*</span></label>
-                                    <select class="form-control" id="status" name="status" required>
-                                        <option value="pending">Pending</option>
-
-                                        <option value="rescued">Rescued</option>
-                                    </select>
-                                </div>
 
                                 <!-- Pet Condition -->
                                 <div class="form-group mb-3">
@@ -297,13 +336,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submitPet'])) {
 
                     document.querySelectorAll(".editModal").forEach(button => {
                         button.addEventListener("click", function () {
-
                             let additional = this.getAttribute("data-additional");
                             let rescueid = this.getAttribute("data-rescueid");
-                            // Update modal image source
+                            let status = this.getAttribute("data-status");
+
                             document.getElementById("modalDetails").innerHTML = additional;
                             document.getElementById("rescueid").value = rescueid;
+
+                            let statusSelect = document.getElementById("status");
+                            if (statusSelect) {
+                                statusSelect.value = status;
+
+                                // Disable status selection if already rescued
+                                statusSelect.disabled = (status === "rescued");
+                            }
+
+                            const isNotRescued = (status === "notrescued");
+
+                            const fieldsToToggle = document.querySelectorAll(
+                                "#name, #gender, #age, #description, #color, #pet_condition, #spayed, #type, #petpics"
+                            );
+
+                            fieldsToToggle.forEach(field => {
+                                const formGroup = field.closest(".form-group");
+                                if (formGroup) {
+                                    formGroup.style.display = isNotRescued ? "none" : "";
+                                }
+                                field.required = !isNotRescued;
+                            });
                         });
+                    });
+
+
+
+                });
+
+                document.getElementById("status").addEventListener("change", function () {
+                    const isNotRescued = this.value === "notrescued";
+
+                    // All fields to hide
+                    const fieldsToToggle = document.querySelectorAll(
+                        "#name, #gender, #age, #description, #color, #pet_condition, #spayed, #type, #petpics"
+                    );
+
+                    fieldsToToggle.forEach(field => {
+                        const formGroup = field.closest(".form-group");
+                        if (formGroup) {
+                            formGroup.style.display = isNotRescued ? "none" : "";
+                            field.required = !isNotRescued; // remove required if not rescued
+                        }
                     });
                 });
             </script>

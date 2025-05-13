@@ -1,6 +1,7 @@
 <?php
 require_once('db/server.php');
 require_once('db/adminloginverify.php');
+require_once('db/sendmail.php');
 $sql = "
         SELECT 
             v.visitid, 
@@ -15,14 +16,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submiteditvisit'])) {
     // Get form data
     $visitid = $_POST['visitid'];
     $status = $_POST['status'];
+
     // Validate data
     if (!empty($visitid) && !empty($status)) {
         // Update query
         $sql = "UPDATE visit SET status = ? WHERE visitid = ?";
-        // Prepare statement
         if ($stmt = $conn->prepare($sql)) {
             $stmt->bind_param("si", $status, $visitid);
             if ($stmt->execute()) {
+
+                // Fetch user email and name
+                $sqlUser = "
+                    SELECT u.email, u.fname 
+                    FROM visit v
+                    JOIN user u ON v.userid = u.userid
+                    WHERE v.visitid = ?
+                ";
+                if ($stmtUser = $conn->prepare($sqlUser)) {
+                    $stmtUser->bind_param("i", $visitid);
+                    $stmtUser->execute();
+                    $resultUser = $stmtUser->get_result();
+                    if ($user = $resultUser->fetch_assoc()) {
+                        $email = $user['email'];
+                        $name = $user['fname'];
+
+                        // Determine email content based on status
+                        $subject = "Shelter Visit Status Update";
+                        $message = "";
+
+                        if ($status === 'approved') {
+                            $message = "Hi $name,\n\nYour shelter visit request has been approved. We look forward to seeing you!";
+                        } elseif ($status === 'declined') {
+                            $message = "Hi $name,\n\nWe regret to inform you that your shelter visit request was declined. Please contact us if you have any questions.";
+                        } elseif ($status === 'scheduled') {
+                            $message = "Hi $name,\n\nYour shelter visit has been successfully scheduled. Thank you!";
+                        } else {
+                            $message = "Hi $name,\n\nYour visit status has been updated to: $status.";
+                        }
+
+                        // Send email
+                        sendmail($email, $name, $subject, $message);
+                    }
+                    $stmtUser->close();
+                }
+
                 $_SESSION['errorMessage'] = "Visit status updated successfully";
                 $_SESSION['errorType'] = "success";
                 $_SESSION['errorHead'] = "Success!";
@@ -42,9 +79,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submiteditvisit'])) {
         $_SESSION['errorType'] = "danger";
         $_SESSION['errorHead'] = "Warning!";
     }
+
     header("Location: adminshelter.php");
     exit();
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en-US">
