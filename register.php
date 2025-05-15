@@ -23,7 +23,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registerbtn'])) {
     if ($check_result->num_rows > 0) {
         $row = $check_result->fetch_assoc();
         if ($row['status'] === 'inactive') {
-            // Delete the inactive account
             $delete_sql = "DELETE FROM user WHERE userid = ?";
             $delete_stmt = $conn->prepare($delete_sql);
             $delete_stmt->bind_param("i", $row['userid']);
@@ -59,7 +58,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registerbtn'])) {
 
     sendmail($email, $fullname, $subject, $message);
 
-    // Insert new user with status Inactive
     $insert_sql = "INSERT INTO user (fname, mname, lname, email, phone, address, password, gender, bday, token) 
                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($insert_sql);

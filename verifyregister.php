@@ -30,7 +30,7 @@ $user = $result->fetch_assoc();
 $userid = $user['userid'];
 $status = $user['status'];
 
-if ($status === 'Active') {
+if ($status === 'active') {
     $_SESSION['errorMessage'] = "Your account is already activated.";
     $_SESSION['errorType'] = "info";
     $_SESSION['errorHead'] = "Notice!";

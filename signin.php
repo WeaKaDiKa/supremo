@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['loginbtn'])) {
         $user = $result->fetch_assoc();
 
         // Check if account is active
-        if ($user['status'] !== 'Active') {
+        if ($user['status'] !== 'active') {
             $_SESSION['errorMessage'] = "Your account is not yet activated. <a href='resend.php?email=" . urlencode($user['email']) . "' class='text-decoration-underline'>Click here to resend verification email</a>.";
             $_SESSION['errorType'] = "warning";
             $_SESSION['errorHead'] = "Account Not Activated!";
@@ -38,10 +38,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['loginbtn'])) {
             // Determine redirection
             $next = $_GET['next'] ?? '';
             switch ($next) {
-                case 'donate': header("Location: donate.php"); break;
-                case 'volunteer': header("Location: visit.php"); break;
-                case 'adopt': header("Location: adopthome.php"); break;
-                default: header("Location: index.php"); break;
+                case 'donate':
+                    header("Location: donate.php");
+                    break;
+                case 'volunteer':
+                    header("Location: visit.php");
+                    break;
+                case 'adopt':
+                    header("Location: adopthome.php");
+                    break;
+                default:
+                    header("Location: index.php");
+                    break;
             }
             exit();
         }
@@ -99,31 +107,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['loginbtn'])) {
                             <input type="email" name="email" class="form-control" id="email" required>
                         </div>
 
-                  
-<div class="mb-3">
-    <label for="password" class="form-label lilita mb-0">PASSWORD</label>
-    <div class="input-group">
-        <input type="password" name="password" class="form-control" id="password" required>
-        <button class="btn btn-outline-secondary" type="button" onclick="togglePassword()">
-            <i id="toggleIcon" class="bi bi-eye-slash"></i>
-        </button>
-    </div>
-</div>
-<script>
-function togglePassword() {
-    const passwordInput = document.getElementById("password");
-    const icon = document.getElementById("toggleIcon");
-    if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        icon.classList.remove("bi-eye-slash");
-        icon.classList.add("bi-eye");
-    } else {
-        passwordInput.type = "password";
-        icon.classList.remove("bi-eye");
-        icon.classList.add("bi-eye-slash");
-    }
-}
-</script>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label lilita mb-0">PASSWORD</label>
+                            <div class="input-group">
+                                <input type="password" name="password" class="form-control" id="password" required>
+                                <button class="btn btn-outline-secondary" type="button" onclick="togglePassword()">
+                                    <i id="toggleIcon" class="bi bi-eye-slash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <script>
+                            function togglePassword() {
+                                const passwordInput = document.getElementById("password");
+                                const icon = document.getElementById("toggleIcon");
+                                if (passwordInput.type === "password") {
+                                    passwordInput.type = "text";
+                                    icon.classList.remove("bi-eye-slash");
+                                    icon.classList.add("bi-eye");
+                                } else {
+                                    passwordInput.type = "password";
+                                    icon.classList.remove("bi-eye");
+                                    icon.classList.add("bi-eye-slash");
+                                }
+                            }
+                        </script>
 
                         <button type="submit" name="loginbtn" class="btn mid-accent-bg text-white w-100 lilita">LOGIN <i
                                 class="bi bi-person-circle"></i></button>
