@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['loginbtn'])) {
 ?>
 
 
-?>
+
 <!DOCTYPE html>
 <html lang="en-US">
 

@@ -77,8 +77,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registerbtn'])) {
 }
 ?>
 
-
-?>
 <!DOCTYPE html>
 <html lang="en-US">
 
@@ -221,6 +219,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registerbtn'])) {
                                                 class="text-danger">*</span></label>
                                         <input type="date" name="birthday" class="form-control" id="birthday" required>
                                     </div>
+                                    <script>
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            const birthdayInput = document.getElementById("birthday");
+                                            if (birthdayInput) {
+                                                const today = new Date();
+                                                const eighteenYearsAgo = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+                                                birthdayInput.max = eighteenYearsAgo.toISOString().split('T')[0];
+                                            }
+                                        });
+                                    </script>
+
                                 </div>
                             </div>
                             <label for="birthday" class="form-label special-label">FULL ADDRESS <span
