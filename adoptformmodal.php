@@ -1,6 +1,10 @@
 <!-- Modal -->
 <?php
 $applicantInfo = getApplicantInfo($conn);
+
+$userid = $_SESSION['userid'];
+$gmeet_date = $_POST['gmeet_date'];
+
 ?>
 <div class="modal fade" id="adoptionModal" tabindex="-1" aria-labelledby="adoptionModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -116,8 +120,8 @@ $applicantInfo = getApplicantInfo($conn);
                         <label class="form-check-label" for="dwelling_condo">CONDO/UNIT</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input type="radio" required name="dwelling_type" class="form-check-input" id="dwelling_apartment"
-                            value="apartment" <?= ($dwellingType == "apartment") ? "checked" : "" ?>>
+                        <input type="radio" required name="dwelling_type" class="form-check-input"
+                            id="dwelling_apartment" value="apartment" <?= ($dwellingType == "apartment") ? "checked" : "" ?>>
                         <label class="form-check-label" for="dwelling_apartment">APARTMENT/TOWNHOUSE</label>
                     </div>
                     <div class="form-check form-check-inline">
@@ -138,18 +142,18 @@ $applicantInfo = getApplicantInfo($conn);
                     ?>
                     <!-- ------------>
                     <div class="form-check form-check-inline">
-                        <input type="radio" required name="pet_allowed" class="form-check-input" id="pet_allowed_yes" value="1"
-                            <?= ($petAllowed == 1) ? "checked" : "" ?>>
+                        <input type="radio" required name="pet_allowed" class="form-check-input" id="pet_allowed_yes"
+                            value="1" <?= ($petAllowed == 1) ? "checked" : "" ?>>
                         <label class="form-check-label" for="pet_allowed_yes">YES</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input type="radio" required name="pet_allowed" class="form-check-input" id="pet_allowed_no" value="0"
-                            <?= ($petAllowed == 0) ? "checked" : "" ?>>
+                        <input type="radio" required name="pet_allowed" class="form-check-input" id="pet_allowed_no"
+                            value="0" <?= ($petAllowed == 0) ? "checked" : "" ?>>
                         <label class="form-check-label" for="pet_allowed_no">NO</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input type="radio" required name="pet_allowed" class="form-check-input" id="pet_allowed_not_sure"
-                            value="not_sure" <?= ($petAllowed == "not_sure") ? "checked" : "" ?>>
+                        <input type="radio" required name="pet_allowed" class="form-check-input"
+                            id="pet_allowed_not_sure" value="not_sure" <?= ($petAllowed == "not_sure") ? "checked" : "" ?>>
                         <label class="form-check-label" for="pet_allowed_not_sure">NOT SURE</label>
                     </div>
                     <div class="form-check form-check-inline">
@@ -220,8 +224,8 @@ $applicantInfo = getApplicantInfo($conn);
                             class="text-danger">*</span></p>
                     <!-- ------------>
                     <div class="form-check form-check-inline">
-                        <input type="radio" required name="support_adopt" class="form-check-input" id="support_adopt_yes"
-                            value="1" <?= is_array($applicantInfo) && $applicantInfo['support_adopt'] == 1 ? "checked" : "" ?>>
+                        <input type="radio" required name="support_adopt" class="form-check-input"
+                            id="support_adopt_yes" value="1" <?= is_array($applicantInfo) && $applicantInfo['support_adopt'] == 1 ? "checked" : "" ?>>
                         <label class="form-check-label" for="support_adopt_yes">YES</label>
                     </div>
                     <div class="form-check form-check-inline">
@@ -230,8 +234,8 @@ $applicantInfo = getApplicantInfo($conn);
                         <label class="form-check-label" for="support_adopt_no">NO</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input type="radio" required name="support_adopt" class="form-check-input" id="support_adopt_not_sure"
-                            value="not_sure" <?= is_array($applicantInfo) && $applicantInfo['support_adopt'] == "not_sure" ? "checked" : "" ?>>
+                        <input type="radio" required name="support_adopt" class="form-check-input"
+                            id="support_adopt_not_sure" value="not_sure" <?= is_array($applicantInfo) && $applicantInfo['support_adopt'] == "not_sure" ? "checked" : "" ?>>
                         <label class="form-check-label" for="support_adopt_not_sure">NOT SURE</label>
                     </div>
                     <!-- ------------>
@@ -239,13 +243,13 @@ $applicantInfo = getApplicantInfo($conn);
                             class="text-danger">*</span></p>
                     <!-- ------------>
                     <div class="form-check form-check-inline">
-                        <input type="radio" required name="future_move" class="form-check-input" id="future_move_yes" value="1"
-                            <?= is_array($applicantInfo) && $applicantInfo['future_move'] == 1 ? "checked" : "" ?>>
+                        <input type="radio" required name="future_move" class="form-check-input" id="future_move_yes"
+                            value="1" <?= is_array($applicantInfo) && $applicantInfo['future_move'] == 1 ? "checked" : "" ?>>
                         <label class="form-check-label" for="future_move_yes">YES</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input type="radio" required name="future_move" class="form-check-input" id="future_move_no" value="0"
-                            <?= is_array($applicantInfo) && $applicantInfo['future_move'] == 0 ? "checked" : "" ?>>
+                        <input type="radio" required name="future_move" class="form-check-input" id="future_move_no"
+                            value="0" <?= is_array($applicantInfo) && $applicantInfo['future_move'] == 0 ? "checked" : "" ?>>
                         <label class="form-check-label" for="future_move_no">NO</label>
                     </div>
                     <!-- ------------>
@@ -260,13 +264,13 @@ $applicantInfo = getApplicantInfo($conn);
                     <p class="mb-0 fw-bold mt-3">IF THE RESCUE YOU INDICATED ABOVE IS NO LONGER AVAILABLE, ARE YOU
                         OPEN TO CHOOSING ANOTHER RESCUE? <span class="text-danger">*</span></p>
                     <div class="form-check form-check-inline">
-                        <input type="radio" required name="pick_other" class="form-check-input" id="pick_other_yes" value="1"
-                            <?= is_array($applicantInfo) && $applicantInfo['pick_other'] == 1 ? "checked" : "" ?>>
+                        <input type="radio" required name="pick_other" class="form-check-input" id="pick_other_yes"
+                            value="1" <?= is_array($applicantInfo) && $applicantInfo['pick_other'] == 1 ? "checked" : "" ?>>
                         <label class="form-check-label" for="pick_other_yes">YES</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input type="radio" required name="pick_other" class="form-check-input" id="pick_other_no" value="0"
-                            <?= is_array($applicantInfo) && $applicantInfo['pick_other'] == 0 ? "checked" : "" ?>>
+                        <input type="radio" required name="pick_other" class="form-check-input" id="pick_other_no"
+                            value="0" <?= is_array($applicantInfo) && $applicantInfo['pick_other'] == 0 ? "checked" : "" ?>>
                         <label class="form-check-label" for="pick_other_no">NO</label>
                     </div>
                     <p class="mb-0 fw-bold mt-3">WHO WILL BE RESPONSIBLE FOR FEEDING, GROOMING, AND GENERALLY CARING
@@ -305,22 +309,22 @@ $applicantInfo = getApplicantInfo($conn);
                             class="text-danger">*</span></p>
                     <!-- ------------>
                     <div class="form-check form-check-inline">
-                        <input type="radio" required name="owner_type" class="form-check-input" id="owner_type_new" value="new"
-                            <?= is_array($applicantInfo) && $applicantInfo['owner_type'] == "new" ? "checked" : "" ?>>
+                        <input type="radio" required name="owner_type" class="form-check-input" id="owner_type_new"
+                            value="new" <?= is_array($applicantInfo) && $applicantInfo['owner_type'] == "new" ? "checked" : "" ?>>
                         <label class="form-check-label" for="owner_type_new">
                             NEW PET OWNER (THIS WILL BE THE FIRST TIME OWNING A PET)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input type="radio" required name="owner_type" class="form-check-input" id="owner_type_less_than"
-                            value="less_than" <?= is_array($applicantInfo) && $applicantInfo['owner_type'] == "less_than" ? "checked" : "" ?>>
+                        <input type="radio" required name="owner_type" class="form-check-input"
+                            id="owner_type_less_than" value="less_than" <?= is_array($applicantInfo) && $applicantInfo['owner_type'] == "less_than" ? "checked" : "" ?>>
                         <label class="form-check-label" for="owner_type_less_than">
                             RECENT PET OWNER (MY FAMILY/I OWN/OWNED A PET LESS THAN 3 YEARS)
                         </label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input type="radio" required name="owner_type" class="form-check-input" id="owner_type_more_than"
-                            value="more_than" <?= is_array($applicantInfo) && $applicantInfo['owner_type'] == "more_than" ? "checked" : "" ?>>
+                        <input type="radio" required name="owner_type" class="form-check-input"
+                            id="owner_type_more_than" value="more_than" <?= is_array($applicantInfo) && $applicantInfo['owner_type'] == "more_than" ? "checked" : "" ?>>
                         <label class="form-check-label" for="owner_type_more_than">
                             SEASONED PET OWNER (MY FAMILY/I OWN/OWNED A PET MORE THAN 3 YEARS)
                         </label>
@@ -373,13 +377,13 @@ $applicantInfo = getApplicantInfo($conn);
                             class="text-danger">*</span></p>
                     <!-- ------------>
                     <div class="form-check form-check-inline">
-                        <input type="radio" required name="past_adopt" class="form-check-input" id="past_adopt_yes" value="1"
-                            <?= is_array($applicantInfo) && $applicantInfo['past_adopt'] == 1 ? "checked" : "" ?>>
+                        <input type="radio" required name="past_adopt" class="form-check-input" id="past_adopt_yes"
+                            value="1" <?= is_array($applicantInfo) && $applicantInfo['past_adopt'] == 1 ? "checked" : "" ?>>
                         <label class="form-check-label" for="past_adopt_yes">YES</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input type="radio" required name="past_adopt" class="form-check-input" id="past_adopt_no" value="0"
-                            <?= is_array($applicantInfo) && $applicantInfo['past_adopt'] == 0 ? "checked" : "" ?>>
+                        <input type="radio" required name="past_adopt" class="form-check-input" id="past_adopt_no"
+                            value="0" <?= is_array($applicantInfo) && $applicantInfo['past_adopt'] == 0 ? "checked" : "" ?>>
                         <label class="form-check-label" for="past_adopt_no">NO</label>
                     </div>
                     <!-- ------------>
@@ -513,20 +517,40 @@ $applicantInfo = getApplicantInfo($conn);
                                             },
                                             success: function (response) {
                                                 let unavailable = JSON.parse(response);
-                                                // Re-enable all timeslots first
-                                                $('input[name="gmeet_time"]').prop('disabled', false);
-                                                $('label[for^="time"]').removeClass('disabled').css('opacity', 1);
-                                                // Disable unavailable timeslots
-                                                unavailable.forEach(function (slot) {
-                                                    $('input[name="gmeet_time"][value="' + slot + '"]').prop('disabled', true);
-                                                    $('label[for="' + $('input[name="gmeet_time"][value="' + slot + '"]').attr('id') + '"]').addClass('disabled').css('opacity', 0.5);
+                                                const allTimes = {
+                                                    "time1": "10:00 AM to 11:00 AM",
+                                                    "time2": "11:00 AM to 12:00 PM",
+                                                    "time3": "1:00 PM to 2:00 PM",
+                                                    "time4": "2:00 PM to 3:00 PM",
+                                                    "time5": "3:00 PM to 4:00 PM"
+                                                };
+
+                                                // Re-enable and label all timeslots as available
+                                                for (let id in allTimes) {
+                                                    const input = $('#' + id);
+                                                    const label = $('label[for="' + id + '"]');
+                                                    input.prop('disabled', false);
+                                                    label.removeClass('disabled').css('opacity', 1);
+                                                    label.find('.status').text(' (Available Slot)');
+                                                }
+
+                                                // Disable and update label for unavailable slots
+                                                unavailable.forEach(function (slotValue) {
+                                                    $('input[name="gmeet_time"]').each(function () {
+                                                        if ($(this).val() === slotValue) {
+                                                            $(this).prop('disabled', true);
+                                                            const label = $('label[for="' + $(this).attr('id') + '"]');
+                                                            label.addClass('disabled').css('opacity', 0.5);
+                                                            label.find('.status').text(' (Unavailable Slot)');
+                                                        }
+                                                    });
                                                 });
+
                                             }
                                         });
                                     });
                                 });
-                                $userid = $_SESSION['userid'];
-                                $gmeet_date = $_POST['gmeet_date'];
+
                             </script>
                             <div class="col-lg-6 ">
                                 <div class="container mt-4">
@@ -534,23 +558,23 @@ $applicantInfo = getApplicantInfo($conn);
                                         <input type="radio" required class="btn-check" name="gmeet_time" id="time1"
                                             value="10:00 AM to 11:00 AM" autocomplete="off">
                                         <label class="btn btn-outline-dark-accent mb-2 lilita  rounded-pill px-4"
-                                            for="time1">10:00 AM to 11:00 AM</label>
+                                            for="time1">10:00 AM to 11:00 AM <span class="status"></span></label>
                                         <input type="radio" required class="btn-check" name="gmeet_time" id="time2"
                                             value="11:00 AM to 12:00 PM" autocomplete="off">
                                         <label class="btn btn-outline-dark-accent mb-2 lilita  rounded-pill px-4"
-                                            for="time2">11:00 AM to 12:00 PM</label>
+                                            for="time2">11:00 AM to 12:00 PM <span class="status"></span></label>
                                         <input type="radio" required class="btn-check" name="gmeet_time" id="time3"
                                             value="1:00 PM to 2:00 PM" autocomplete="off">
                                         <label class="btn btn-outline-dark-accent mb-2 lilita  rounded-pill px-4"
-                                            for="time3">1:00 PM to 2:00 PM</label>
+                                            for="time3">1:00 PM to 2:00 PM <span class="status"></span></label>
                                         <input type="radio" required class="btn-check" name="gmeet_time" id="time4"
                                             value="2:00 PM to 3:00 PM" autocomplete="off">
                                         <label class="btn btn-outline-dark-accent mb-2 lilita  rounded-pill px-4"
-                                            for="time4">2:00 PM to 3:00 PM</label>
+                                            for="time4">2:00 PM to 3:00 PM <span class="status"></span></label>
                                         <input type="radio" required class="btn-check" name="gmeet_time" id="time5"
                                             value="3:00 PM to 4:00 PM" autocomplete="off">
                                         <label class="btn btn-outline-dark-accent mb-2 lilita  rounded-pill px-4"
-                                            for="time5">3:00 PM to 4:00 PM</label>
+                                            for="time5">3:00 PM to 4:00 PM <span class="status"></span></label>
                                     </div>
                                 </div>
                             </div>
@@ -591,13 +615,13 @@ $applicantInfo = getApplicantInfo($conn);
                             class="text-danger">*</span></p>
                     <!-- ------------>
                     <div class="form-check form-check-inline">
-                        <input type="radio" required name="meet_greet" class="form-check-input" id="meet_greet_yes" value="1"
-                            <?= is_array($applicantInfo) && $applicantInfo['meet_greet'] == 1 ? "checked" : "" ?>>
+                        <input type="radio" required name="meet_greet" class="form-check-input" id="meet_greet_yes"
+                            value="1" <?= is_array($applicantInfo) && $applicantInfo['meet_greet'] == 1 ? "checked" : "" ?>>
                         <label class="form-check-label" for="meet_greet_yes">YES</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input type="radio" required name="meet_greet" class="form-check-input" id="meet_greet_no" value="0"
-                            <?= is_array($applicantInfo) && $applicantInfo['meet_greet'] == 0 ? "checked" : "" ?>>
+                        <input type="radio" required name="meet_greet" class="form-check-input" id="meet_greet_no"
+                            value="0" <?= is_array($applicantInfo) && $applicantInfo['meet_greet'] == 0 ? "checked" : "" ?>>
                         <label class="form-check-label" for="meet_greet_no">NO</label>
                     </div>
                     <!-- ------------>

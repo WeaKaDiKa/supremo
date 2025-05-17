@@ -1,11 +1,6 @@
 <?php
-$database = 'if0_36164163_supremo';
-$username = 'if0_36164163';
-$host = 'sql104.infinityfree.com';
-$password = 'Zh2M744E4KwckU';
 
-$database = 'supremo';
-$username = 'root';
-$host = 'localhost';
-$password = '';
-
+$database = 'if0_38809110_supremo';
+$username = 'if0_38809110';
+$host = 'sql103.infinityfree.com';
+$password = '242NjcyhGjtZIp';
