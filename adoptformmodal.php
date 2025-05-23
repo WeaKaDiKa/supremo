@@ -3,8 +3,9 @@
 $applicantInfo = getApplicantInfo($conn);
 
 $userid = $_SESSION['userid'];
-$gmeet_date = $_POST['gmeet_date'];
-
+if (isset($_POST['gmeet_date'])) {
+    $gmeet_date = $_POST['gmeet_date'];
+}
 ?>
 <div class="modal fade" id="adoptionModal" tabindex="-1" aria-labelledby="adoptionModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -490,7 +491,28 @@ $gmeet_date = $_POST['gmeet_date'];
 
 
 
-                    <?php if ((is_array($applicantInfo) && $applicantInfo['status'] != "New" && $applicantInfo['status'] != "For Gmeet Interview") || !is_array($applicantInfo)): ?>
+                    <?php
+                    $isOlderThan30Days = false;
+                    $message = "Cannot submit new application while there is another ongoing application.";
+
+                    if (is_array($applicantInfo) && isset($applicantInfo['date_applied'])) {
+                        $appliedDate = new DateTime($applicantInfo['date_applied']);
+                        $now = new DateTime();
+                        $interval = $appliedDate->diff($now);
+                        $isOlderThan30Days = ($interval->days >= 30);
+
+                        if (!$isOlderThan30Days) {
+                            $message = "You must wait 30 days before submitting another application.";
+                        }
+                    }
+                    ?>
+
+
+                    <?php if (
+                        (is_array($applicantInfo) && $applicantInfo['status'] != "New" && $applicantInfo['status'] != "For Gmeet Interview" && $isOlderThan30Days)
+                        || !is_array($applicantInfo)
+                    ): ?>
+
                         <p class="mb-0 fw-bold mt-3 text-center">Preferred date and time for Google Meet Interview <span
                                 class="text-danger">*</span> </p>
                         <div class="row mb-4">
@@ -607,8 +629,7 @@ $gmeet_date = $_POST['gmeet_date'];
                             </div>
                         <?php endif; ?>
 
-                        <h5 class="lilita mt-3 text-center">Cannot submit new application while there is another ongoing
-                            application</h5>
+                        <h5 class="lilita mt-3 text-center"><?= htmlspecialchars($message) ?></h5>
 
                     <?php endif; ?>
                     <p class="mb-0 fw-bold mt-3">Will you be able to visit the shelter for the meet-and-greet? <span
@@ -628,7 +649,12 @@ $gmeet_date = $_POST['gmeet_date'];
 
 
                 </div>
-                <?php if ((is_array($applicantInfo) && $applicantInfo['status'] != "New" && $applicantInfo['status'] != "For Gmeet Interview") || !is_array($applicantInfo)): ?>
+
+                <?php if (
+                    (is_array($applicantInfo) && $applicantInfo['status'] != "New" && $applicantInfo['status'] != "For Gmeet Interview" && $isOlderThan30Days)
+                    || !is_array($applicantInfo)
+                ): ?>
+
                     <div class="text-center my-3">
 
                         <button type="submit" name="adoptbtn"

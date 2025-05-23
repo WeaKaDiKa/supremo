@@ -53,22 +53,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['applicantedit'])) {
 
     $name = $fname . ' ' . $lname;
 
-
     $subject = "Application Status Update";
-    $message = "<p>Dear $name,</p>";
+
+    $message = "<p><strong>Subject:</strong> Application Status Update – $status</p>";
+    $message .= "<p><strong>Dear $name,</strong></p>";
 
     if ($status === 'For Gmeet Interview' && $gmeetlink) {
         $message .= "<p>Your application status is now <strong>For Gmeet Interview</strong>.</p>
-                     <p>Please join the meeting using the following link:</p>
-                     <p><a href='$gmeetlink' target='_blank' style='background-color:#1a73e8;color:#fff;padding:10px 20px;text-decoration:none;border-radius:4px;'>Join Google Meet</a></p>";
+                 <p>Please join the meeting using the following link:</p>
+                 <p><a href='$gmeetlink' target='_blank' style='background-color:#1a73e8;color:#fff;padding:10px 20px;text-decoration:none;border-radius:4px;'>Join Google Meet</a></p>";
     } elseif ($status === 'Approved') {
-        $message .= "<p>Congratulations! Your application has been <strong>Approved</strong>.</p>
-                     <p>Thank you for adopting a pet!</p>";
+        $message .= "<p>Congratulations! We're excited to inform you that your adoption application has been <strong>approved</strong>, and you have successfully passed the interview.</p>
+                 <p>We're thrilled to help you take the next step in welcoming your new furry companion into your home!</p>
+                 <p>To schedule your preferred date to visit the shelter and pick up your chosen pet, please click the link below:</p>
+                 <p>👉 <a href='YOUR_SHELTER_VISIT_LINK' target='_blank' style='color:#1a73e8;text-decoration:none;'><strong>Schedule Your Shelter Visit</strong></a></p>
+                 <p>We look forward to seeing you soon and officially uniting you with your future fur-ever friend!</p>";
     } elseif ($status === 'Disapproved') {
-        $message .= "<p>We're sorry to inform you that your application has been <strong>Disapproved</strong>.</p>";
+        $message .= "<p>Thank you for your interest in giving a rescue animal a loving home through Supremo Fur Babies.</p>
+                 <p>After careful consideration, we regret to inform you that your adoption application has <strong>not been approved</strong> at this time. Based on the information provided, we believe that certain requirements were not fully met to ensure the best possible match and environment for our rescue animals.</p>
+                 <p>Please know that this decision does not reflect negatively on your intentions — we truly appreciate your compassion and support.</p>
+                 <p>If you still wish to adopt, you're welcome to reapply after <strong>30 days</strong>.</p>
+                 <p>In the meantime, feel free to stay connected with us through our website and social media for updates on available pets and opportunities to get involved.</p>";
     }
 
-    $message .= "<p>Best regards,<br>Adoption Team</p>";
+    $message .= "<p><strong>Warm regards,</strong><br><strong>The Adoption Team</strong></p>";
 
 
     sendmail($email, $name, $subject, $message);

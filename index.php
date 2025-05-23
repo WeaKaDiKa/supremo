@@ -143,55 +143,80 @@ foreach ($queries as $key => $sql) {
             <div class="d-flex align-items-center justify-content-center">
                 <a class="btn dark-accent-bg text-white lilita mt-3 fs-5">COME VISIT US</a>
             </div>
-            <h1 class="text-center dark-accent-fg mt-5 lilita">
-                Meet Our Rescues!
-            </h1>
+            <h1 class="text-center dark-accent-fg mt-5 lilita">Meet Our Rescues!</h1>
+
             <?php
-            // Fetch available pets with images
-            $sql = "SELECT pet.petid, pet.name, 
+            // Fetch pets with image and type
+            $sql = "SELECT pet.petid, pet.name, pet.type,
                (SELECT picurl FROM petpics WHERE petpics.petid = pet.petid LIMIT 1) AS picurl
         FROM pet 
-        WHERE pet.status = 'available' ";
-            $result = $conn->query(query: $sql);
-            // Store images in an array
-            $images = [];
+        WHERE pet.status = 'available'";
+            $result = $conn->query($sql);
+
+            $cats = [];
+            $dogs = [];
             while ($row = $result->fetch_assoc()) {
-                $images[] = [
+                $pet = [
                     'url' => "assets/img/uploads/pets/" . $row['picurl'],
                     'id' => $row['petid']
                 ];
+                if (strtolower($row['type']) === 'cat') {
+                    $cats[] = $pet;
+                } elseif (strtolower($row['type']) === 'dog') {
+                    $dogs[] = $pet;
+                }
             }
-            $imagesJson = json_encode($images);
+
+            $catsJson = json_encode($cats);
+            $dogsJson = json_encode($dogs);
             ?>
-            <div class="dark-accent-bg text-white d-flex justify-content-between align-items-center p-3">
+
+            <!-- CATS SECTION -->
+            <div class="dark-accent-bg text-white d-flex justify-content-between align-items-center p-3 mt-4">
                 <h4 class="lilita m-0">ADOPT ME!</h4>
                 <div class="d-flex">
-                    <button class="btn btn-light me-3 fs-5" id="prevBtn">&larr;</button>
-                    <button class="btn btn-light fs-5" id="nextBtn">&rarr;</button>
+                    <button class="btn btn-light me-3 fs-5" id="prevCatBtn">&larr;</button>
+                    <button class="btn btn-light fs-5" id="nextCatBtn">&rarr;</button>
                 </div>
             </div>
-            <div class="row px-3 my-3" id="petGallery">
+            <div class="row px-3 my-3" id="catGallery"></div>
+
+            <!-- DOGS SECTION -->
+            <div class="dark-accent-bg text-white d-flex justify-content-between align-items-center p-3 mt-4">
+                <h4 class="lilita m-0">ADOPT ME!</h4>
+                <div class="d-flex">
+                    <button class="btn btn-light me-3 fs-5" id="prevDogBtn">&larr;</button>
+                    <button class="btn btn-light fs-5" id="nextDogBtn">&rarr;</button>
+                </div>
             </div>
+            <div class="row px-3 my-3" id="dogGallery"></div>
+
             <script>
-                let images = <?= $imagesJson ?>; // Get images from PHP
-                let currentIndex = 0;
+                let cats = <?= $catsJson ?>;
+                let dogs = <?= $dogsJson ?>;
+
+                let catIndex = 0;
+                let dogIndex = 0;
                 const itemsPerPage = 4;
-                function displayImages() {
-                    let container = document.getElementById('petGallery');
+
+                function displayImages(dataArray, containerId, startIndex) {
+                    const container = document.getElementById(containerId);
                     container.innerHTML = '';
-                    if (images.length === 0) {
-                        container.innerHTML = '<div class="col-12 no-pets lilita text-center fs-3">No available pet for adoption</div>';
+
+                    if (dataArray.length === 0) {
+                        container.innerHTML = `<div class="col-12 no-pets lilita text-center fs-3">No available ${containerId === 'catGallery' ? 'cat' : 'dog'} for adoption</div>`;
                         return;
                     }
-                    for (let i = currentIndex; i < currentIndex + itemsPerPage && i < images.length; i++) {
+
+                    for (let i = startIndex; i < startIndex + itemsPerPage && i < dataArray.length; i++) {
                         let colDiv = document.createElement('div');
                         colDiv.className = 'col-md-6 col-lg-3 p-2';
                         let squareContainer = document.createElement('div');
                         squareContainer.className = 'square-container';
                         let link = document.createElement('a');
-                        link.href = `petdetails.php?petid=${images[i].id}`;
+                        link.href = `petdetails.php?petid=${dataArray[i].id}`;
                         let img = document.createElement('img');
-                        img.src = images[i].url;
+                        img.src = dataArray[i].url;
                         img.alt = 'Pet Image';
                         link.appendChild(img);
                         squareContainer.appendChild(link);
@@ -199,21 +224,42 @@ foreach ($queries as $key => $sql) {
                         container.appendChild(colDiv);
                     }
                 }
-                document.getElementById('prevBtn').addEventListener('click', () => {
-                    if (currentIndex > 0) {
-                        currentIndex -= itemsPerPage;
-                        displayImages();
+
+                // CAT NAVIGATION
+                document.getElementById('prevCatBtn').addEventListener('click', () => {
+                    if (catIndex > 0) {
+                        catIndex -= itemsPerPage;
+                        displayImages(cats, 'catGallery', catIndex);
                     }
                 });
-                document.getElementById('nextBtn').addEventListener('click', () => {
-                    if (currentIndex + itemsPerPage < images.length) {
-                        currentIndex += itemsPerPage;
-                        displayImages();
+
+                document.getElementById('nextCatBtn').addEventListener('click', () => {
+                    if (catIndex + itemsPerPage < cats.length) {
+                        catIndex += itemsPerPage;
+                        displayImages(cats, 'catGallery', catIndex);
                     }
                 });
-                // Initialize display
-                displayImages();
+
+                // DOG NAVIGATION
+                document.getElementById('prevDogBtn').addEventListener('click', () => {
+                    if (dogIndex > 0) {
+                        dogIndex -= itemsPerPage;
+                        displayImages(dogs, 'dogGallery', dogIndex);
+                    }
+                });
+
+                document.getElementById('nextDogBtn').addEventListener('click', () => {
+                    if (dogIndex + itemsPerPage < dogs.length) {
+                        dogIndex += itemsPerPage;
+                        displayImages(dogs, 'dogGallery', dogIndex);
+                    }
+                });
+
+                // INITIAL DISPLAY
+                displayImages(cats, 'catGallery', catIndex);
+                displayImages(dogs, 'dogGallery', dogIndex);
             </script>
+
         </div>
     </main>
     <?php
