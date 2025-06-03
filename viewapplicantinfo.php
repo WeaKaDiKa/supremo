@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['applicantedit'])) {
         $message .= "<p>Congratulations! We're excited to inform you that your adoption application has been <strong>approved</strong>, and you have successfully passed the interview.</p>
                  <p>We're thrilled to help you take the next step in welcoming your new furry companion into your home!</p>
                  <p>To schedule your preferred date to visit the shelter and pick up your chosen pet, please click the link below:</p>
-                 <p>👉 <a href='YOUR_SHELTER_VISIT_LINK' target='_blank' style='color:#1a73e8;text-decoration:none;'><strong>Schedule Your Shelter Visit</strong></a></p>
+                 <p>👉 <a href='http://supremofurbabies.great-site.net/visit.php' target='_blank' style='color:#1a73e8;text-decoration:none;'><strong>Schedule Your Shelter Visit</strong></a></p>
                  <p>We look forward to seeing you soon and officially uniting you with your future fur-ever friend!</p>";
     } elseif ($status === 'Disapproved') {
         $message .= "<p>Thank you for your interest in giving a rescue animal a loving home through Supremo Fur Babies.</p>

@@ -15,17 +15,16 @@ function sendmail($email, $name, $subject, $message)
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        // $mail->Username = 'cyadolar@gmail.com';
-        // $mail->Password = 'xkzkubmamophzqqc';
-            $mail->Username = 'supremofurbabies@gmail.com';
-         $mail->Password = 'vowdjcrbaozgruuv';
-        
+
+        $mail->Username = 'supremofurbabies@gmail.com';
+        $mail->Password = 'vowdjcrbaozgruuv';
+
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
         // Recipients
         $mail->setFrom('cyadolar@gmail.com', 'Supremo Fur Babies');
-        $mail->addAddress($email, $name); 
+        $mail->addAddress($email, $name);
 
         // Content
         $mail->isHTML(true);
@@ -39,8 +38,8 @@ function sendmail($email, $name, $subject, $message)
         ";
 
         $mail->send();
-         json_encode(['status' => 'success', 'message' => 'Email sent successfully.']);
+        json_encode(['status' => 'success', 'message' => 'Email sent successfully.']);
     } catch (Exception $e) {
-         json_encode(['status' => 'error', 'message' => 'Email could not be sent. Error: ' . $mail->ErrorInfo]);
+        json_encode(['status' => 'error', 'message' => 'Email could not be sent. Error: ' . $mail->ErrorInfo]);
     }
 }

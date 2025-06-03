@@ -15,8 +15,30 @@ if (isset($_POST['gmeet_date'])) {
             </div>
             <form method="post" enctype="multipart/form-data" id="applicationforms">
                 <div class="modal-body">
+
                     <h1 class="modal-title lilita text-center dark-accent-fg mb-3" id="adoptionModalLabel">APPLY NOW
                     </h1>
+                    <p>Hi <?= $user['fname'] ?>! Thank you for your interest in giving a furever home to one of our rescues. We have a
+                        lot of rescue dogs and cats ready for adoption at our Malabon Shelter. Our adoption process is
+                        super easy!</p>
+                    <h5 class="card-title mb-3">Adoption Process:</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Step 1: Submit the Adoption Form</h6>
+                    <p>Start by filling out the adoption form. Once submitted, you’ll receive a confirmation email with
+                        the details of your selected Google Meet interview schedule. Please allow at least a day for our
+                        team to review your application.</p>
+                    <h6 class="card-subtitle mb-2 text-muted">Step 2: Attend the Interview</h6>
+                    <p>If your application moves forward, you’ll receive an email with the status: “For Gmeet
+                        Interview.” One of our staff members will then meet with you online to get to know you better
+                        and answer any questions you may have. You can join the scheduled interview through the Google
+                        Meet link provided in the email.</p>
+                    <h6 class="card-subtitle mb-2 text-muted">Step 3: Visit and Adopt</h6>
+                    <p>Once your application and interview have been approved, you will be invited to visit the shelter.
+                        From there, you can meet and bring home your new best fur friend!</p>
+                    <div class="alert alert-warning" role="alert">
+                        <strong>Important:</strong> Our Shelter is located at <strong>MALABON</strong>. Adopters should
+                        be willing to travel to our Shelter to meet and pick up the rescue they want to adopt.
+                    </div>
+
                     <h3 class="mb-3 lilita">Applicant's Info</h3>
                     <p class="mb-0 fw-bold">COMPLETE NAME <span class="text-danger">*</span></p>
                     <div class="row">
@@ -110,30 +132,67 @@ if (isset($_POST['gmeet_date'])) {
                     <p class="text-muted mb-0">In an effort to help the process go smoothly, please be as detailed
                         as
                         possible with your responses to the questions below.</p>
-                    <p class="mb-0 fw-bold">TYPE OF DWELLING <span class="text-danger">*</span></p>
+
+
+
+                    <p class="mb-0 fw-bold mt-3">TYPE OF DWELLING <span class="text-danger">*</span></p>
                     <?php
                     $dwellingType = isset($applicantInfo['dwelling_type']) ? $applicantInfo['dwelling_type'] : '';
                     ?>
                     <!-- ------------>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="dwelling_type" class="form-check-input" id="dwelling_condo"
-                            value="condo" <?= ($dwellingType == "condo") ? "checked" : "" ?>>
-                        <label class="form-check-label" for="dwelling_condo">CONDO/UNIT</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="radio" required name="dwelling_type" class="form-check-input"
+                                    id="dwelling_condo" value="condo" <?= ($dwellingType == "condo") ? "checked" : "" ?>>
+                                <label class="form-check-label" for="dwelling_condo">CONDO/UNIT</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="radio" required name="dwelling_type" class="form-check-input"
+                                    id="dwelling_apartment" value="apartment" <?= ($dwellingType == "apartment") ? "checked" : "" ?>>
+                                <label class="form-check-label" for="dwelling_apartment">APARTMENT/TOWNHOUSE</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="radio" required name="dwelling_type" class="form-check-input"
+                                    id="dwelling_single" value="single" <?= ($dwellingType == "single") ? "checked" : "" ?>>
+                                <label class="form-check-label" for="dwelling_single">SINGLE-STOREY HOUSE</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="radio" required name="dwelling_type" class="form-check-input"
+                                    id="dwelling_others" value="others" <?= ($dwellingType == "others") ? "checked" : "" ?>>
+                                <label class="form-check-label" for="dwelling_others">OTHERS</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="dwelling_type" class="form-check-input"
-                            id="dwelling_apartment" value="apartment" <?= ($dwellingType == "apartment") ? "checked" : "" ?>>
-                        <label class="form-check-label" for="dwelling_apartment">APARTMENT/TOWNHOUSE</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="dwelling_type" class="form-check-input" id="dwelling_single"
-                            value="single" <?= ($dwellingType == "single") ? "checked" : "" ?>>
-                        <label class="form-check-label" for="dwelling_single">SINGLE-STOREY HOUSE</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="dwelling_type" class="form-check-input" id="dwelling_others"
-                            value="others" <?= ($dwellingType == "others") ? "checked" : "" ?>>
-                        <label class="form-check-label" for="dwelling_others">OTHERS</label>
+                    <!-- ------------>
+                    <p class="mb-0 fw-bold mt-3">DWELLING OWNERSHIP <span class="text-danger">*</span></p>
+                    <?php
+                    $dwellingOwnership = isset($applicantInfo['dwelling_ownership']) ? $applicantInfo['dwelling_ownership'] : '';
+                    ?>
+                    <!-- ------------>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="radio" required name="dwelling_ownership" class="form-check-input"
+                                    id="dwelling_ownership_rent" value="rent" <?= ($dwellingOwnership == "rent") ? "checked" : "" ?>>
+                                <label class="form-check-label" for="dwelling_ownership_rent">RENT</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="radio" required name="dwelling_ownership" class="form-check-input"
+                                    id="dwelling_ownership_owned" value="owned" <?= ($dwellingOwnership == "owned") ? "checked" : "" ?>>
+                                <label class="form-check-label" for="dwelling_ownership_owned">
+                                    OWNED BY ME / OWNED BY MY FAMILY
+                                </label>
+                            </div>
+                        </div>
                     </div>
                     <!-- ------------>
                     <p class="mb-0 fw-bold mt-3">IF YOU ARE RENTING, HAVE YOU CONFIRMED THAT PETS ARE ALLOWED BY THE
@@ -142,117 +201,145 @@ if (isset($_POST['gmeet_date'])) {
                     $petAllowed = isset($applicantInfo['pet_allowed']) ? $applicantInfo['pet_allowed'] : '';
                     ?>
                     <!-- ------------>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="pet_allowed" class="form-check-input" id="pet_allowed_yes"
-                            value="1" <?= ($petAllowed == 1) ? "checked" : "" ?>>
-                        <label class="form-check-label" for="pet_allowed_yes">YES</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="radio" required name="pet_allowed" class="form-check-input"
+                                    id="pet_allowed_yes" value="1" <?= ($petAllowed == 1) ? "checked" : "" ?>>
+                                <label class="form-check-label" for="pet_allowed_yes">YES</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="radio" required name="pet_allowed" class="form-check-input"
+                                    id="pet_allowed_no" value="0" <?= ($petAllowed == 0) ? "checked" : "" ?>>
+                                <label class="form-check-label" for="pet_allowed_no">NO</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="radio" required name="pet_allowed" class="form-check-input"
+                                    id="pet_allowed_not_sure" value="not_sure" <?= ($petAllowed == "not_sure") ? "checked" : "" ?>>
+                                <label class="form-check-label" for="pet_allowed_not_sure">NOT SURE</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="radio" required name="pet_allowed" class="form-check-input"
+                                    id="pet_allowed_we_own" value="we_own" <?= ($petAllowed == "we_own") ? "checked" : "" ?>>
+                                <label class="form-check-label" for="pet_allowed_we_own">WE OWN OUR DWELLING</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="pet_allowed" class="form-check-input" id="pet_allowed_no"
-                            value="0" <?= ($petAllowed == 0) ? "checked" : "" ?>>
-                        <label class="form-check-label" for="pet_allowed_no">NO</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="pet_allowed" class="form-check-input"
-                            id="pet_allowed_not_sure" value="not_sure" <?= ($petAllowed == "not_sure") ? "checked" : "" ?>>
-                        <label class="form-check-label" for="pet_allowed_not_sure">NOT SURE</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="pet_allowed" class="form-check-input" id="pet_allowed_we_own"
-                            value="we_own" <?= ($petAllowed == "we_own") ? "checked" : "" ?>>
-                        <label class="form-check-label" for="pet_allowed_we_own">WE OWN OUR DWELLING</label>
-                    </div>
-                    <!-- ------------>
-                    <p class="mb-0 fw-bold mt-3">DWELLING OWNERSHIP <span class="text-danger">*</span></p>
-                    <?php
-                    $dwellingOwnership = isset($applicantInfo['dwelling_ownership']) ? $applicantInfo['dwelling_ownership'] : '';
-                    ?>
-                    <!-- ------------>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="dwelling_ownership" class="form-check-input"
-                            id="dwelling_ownership_rent" value="rent" <?= ($dwellingOwnership == "rent") ? "checked" : "" ?>>
-                        <label class="form-check-label" for="dwelling_ownership_rent">RENT</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="dwelling_ownership" class="form-check-input"
-                            id="dwelling_ownership_owned" value="owned" <?= ($dwellingOwnership == "owned") ? "checked" : "" ?>>
-                        <label class="form-check-label" for="dwelling_ownership_owned">OWNED BY ME / OWNED BY MY
-                            FAMILY</label>
-                    </div>
+
+
                     <!-- ------------>
                     <p class="mb-0 fw-bold mt-3">WHO DO YOU LIVE WITH? <span class="text-danger">*</span></p>
                     <?php
                     $liveWithArray = is_array($applicantInfo) ? explode(',', $applicantInfo['live_with']) : [];
                     ?>
                     <!-- ------------>
-                    <div class="form-check form-check-inline">
-                        <input type="checkbox" name="live_with[]" class="form-check-input" id="live_with_alone"
-                            value="alone" <?= in_array("alone", $liveWithArray) ? "checked" : "" ?>>
-                        <label class="form-check-label" for="live_with_alone">LIVING ALONE</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="checkbox" name="live_with[]" class="form-check-input" id="live_with_alone"
+                                    value="alone" <?= in_array("alone", $liveWithArray) ? "checked" : "" ?>>
+                                <label class="form-check-label" for="live_with_alone">LIVING ALONE</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="checkbox" name="live_with[]" class="form-check-input" id="live_with_spouse"
+                                    value="spouse" <?= in_array("spouse", $liveWithArray) ? "checked" : "" ?>>
+                                <label class="form-check-label" for="live_with_spouse">SPOUSE</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="checkbox" name="live_with[]" class="form-check-input"
+                                    id="live_with_parents" value="parent" <?= in_array("parent", $liveWithArray) ? "checked" : "" ?>>
+                                <label class="form-check-label" for="live_with_parents">PARENTS</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="checkbox" name="live_with[]" class="form-check-input"
+                                    id="live_with_relatives" value="relatives" <?= in_array("relatives", $liveWithArray) ? "checked" : "" ?>>
+                                <label class="form-check-label" for="live_with_relatives">RELATIVES</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="checkbox" name="live_with[]" class="form-check-input"
+                                    id="live_with_child_over" value="child_over" <?= in_array("child_over", $liveWithArray) ? "checked" : "" ?>>
+                                <label class="form-check-label" for="live_with_child_over">CHILDREN OVER 18</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="checkbox" name="live_with[]" class="form-check-input"
+                                    id="live_with_child_under" value="child_under" <?= in_array("child_under", $liveWithArray) ? "checked" : "" ?>>
+                                <label class="form-check-label" for="live_with_child_under">CHILDREN UNDER 18</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="checkbox" name="live_with[]" class="form-check-input" id="live_with_rent"
+                                    value="rent" <?= in_array("rent", $liveWithArray) ? "checked" : "" ?>>
+                                <label class="form-check-label" for="live_with_rent">ROOMMATE/S</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input type="checkbox" name="live_with[]" class="form-check-input" id="live_with_spouse"
-                            value="spouse" <?= in_array("spouse", $liveWithArray) ? "checked" : "" ?>>
-                        <label class="form-check-label" for="live_with_spouse">SPOUSE</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input type="checkbox" name="live_with[]" class="form-check-input" id="live_with_parents"
-                            value="parent" <?= in_array("parent", $liveWithArray) ? "checked" : "" ?>>
-                        <label class="form-check-label" for="live_with_parents">PARENTS</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input type="checkbox" name="live_with[]" class="form-check-input" id="live_with_relatives"
-                            value="relatives" <?= in_array("relatives", $liveWithArray) ? "checked" : "" ?>>
-                        <label class="form-check-label" for="live_with_relatives">RELATIVES</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input type="checkbox" name="live_with[]" class="form-check-input" id="live_with_child_over"
-                            value="child_over" <?= in_array("child_over", $liveWithArray) ? "checked" : "" ?>>
-                        <label class="form-check-label" for="live_with_child_over">CHILDREN OVER 18</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input type="checkbox" name="live_with[]" class="form-check-input" id="live_with_child_under"
-                            value="child_under" <?= in_array("child_under", $liveWithArray) ? "checked" : "" ?>>
-                        <label class="form-check-label" for="live_with_child_under">CHILDREN UNDER 18</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input type="checkbox" name="live_with[]" class="form-check-input" id="live_with_rent"
-                            value="rent" <?= in_array("rent", $liveWithArray) ? "checked" : "" ?>>
-                        <label class="form-check-label" for="live_with_rent">ROOMMATE/S</label>
-                    </div>
+
                     <!-- ------------>
                     <p class="mb-0 fw-bold mt-3">ARE ALL THE MEMBERS OF YOUR HOUSEHOLD SUPPORTIVE OF ADOPTING? <span
                             class="text-danger">*</span></p>
                     <!-- ------------>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="support_adopt" class="form-check-input"
-                            id="support_adopt_yes" value="1" <?= is_array($applicantInfo) && $applicantInfo['support_adopt'] == 1 ? "checked" : "" ?>>
-                        <label class="form-check-label" for="support_adopt_yes">YES</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="radio" required name="support_adopt" class="form-check-input"
+                                    id="support_adopt_yes" value="1" <?= is_array($applicantInfo) && $applicantInfo['support_adopt'] == 1 ? "checked" : "" ?>>
+                                <label class="form-check-label" for="support_adopt_yes">YES</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="radio" required name="support_adopt" class="form-check-input"
+                                    id="support_adopt_no" value="0" <?= is_array($applicantInfo) && $applicantInfo['support_adopt'] == 0 ? "checked" : "" ?>>
+                                <label class="form-check-label" for="support_adopt_no">NO</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="radio" required name="support_adopt" class="form-check-input"
+                                    id="support_adopt_not_sure" value="not_sure" <?= is_array($applicantInfo) && $applicantInfo['support_adopt'] == "not_sure" ? "checked" : "" ?>>
+                                <label class="form-check-label" for="support_adopt_not_sure">NOT SURE</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="support_adopt" class="form-check-input" id="support_adopt_no"
-                            value="0" <?= is_array($applicantInfo) && $applicantInfo['support_adopt'] == 0 ? "checked" : "" ?>>
-                        <label class="form-check-label" for="support_adopt_no">NO</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="support_adopt" class="form-check-input"
-                            id="support_adopt_not_sure" value="not_sure" <?= is_array($applicantInfo) && $applicantInfo['support_adopt'] == "not_sure" ? "checked" : "" ?>>
-                        <label class="form-check-label" for="support_adopt_not_sure">NOT SURE</label>
-                    </div>
+
                     <!-- ------------>
                     <p class="mb-0 fw-bold mt-3">ARE YOU PLANNING TO MOVE IN THE FUTURE? <span
                             class="text-danger">*</span></p>
                     <!-- ------------>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="future_move" class="form-check-input" id="future_move_yes"
-                            value="1" <?= is_array($applicantInfo) && $applicantInfo['future_move'] == 1 ? "checked" : "" ?>>
-                        <label class="form-check-label" for="future_move_yes">YES</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="radio" required name="future_move" class="form-check-input"
+                                    id="future_move_yes" value="1" <?= is_array($applicantInfo) && $applicantInfo['future_move'] == 1 ? "checked" : "" ?>>
+                                <label class="form-check-label" for="future_move_yes">YES</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="radio" required name="future_move" class="form-check-input"
+                                    id="future_move_no" value="0" <?= is_array($applicantInfo) && $applicantInfo['future_move'] == 0 ? "checked" : "" ?>>
+                                <label class="form-check-label" for="future_move_no">NO</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="future_move" class="form-check-input" id="future_move_no"
-                            value="0" <?= is_array($applicantInfo) && $applicantInfo['future_move'] == 0 ? "checked" : "" ?>>
-                        <label class="form-check-label" for="future_move_no">NO</label>
-                    </div>
+
                     <!-- ------------>
                     <p class="mb-0 fw-bold mt-3">NAME OF RESCUE YOU WANT TO ADOPT <span class="text-danger">*</span>
                     </p>
@@ -264,16 +351,23 @@ if (isset($_POST['gmeet_date'])) {
                         value="<?= is_array($applicantInfo) ? $applicantInfo['picked'] : "" ?>" required>
                     <p class="mb-0 fw-bold mt-3">IF THE RESCUE YOU INDICATED ABOVE IS NO LONGER AVAILABLE, ARE YOU
                         OPEN TO CHOOSING ANOTHER RESCUE? <span class="text-danger">*</span></p>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="pick_other" class="form-check-input" id="pick_other_yes"
-                            value="1" <?= is_array($applicantInfo) && $applicantInfo['pick_other'] == 1 ? "checked" : "" ?>>
-                        <label class="form-check-label" for="pick_other_yes">YES</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="radio" required name="pick_other" class="form-check-input"
+                                    id="pick_other_yes" value="1" <?= is_array($applicantInfo) && $applicantInfo['pick_other'] == 1 ? "checked" : "" ?>>
+                                <label class="form-check-label" for="pick_other_yes">YES</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="radio" required name="pick_other" class="form-check-input"
+                                    id="pick_other_no" value="0" <?= is_array($applicantInfo) && $applicantInfo['pick_other'] == 0 ? "checked" : "" ?>>
+                                <label class="form-check-label" for="pick_other_no">NO</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="pick_other" class="form-check-input" id="pick_other_no"
-                            value="0" <?= is_array($applicantInfo) && $applicantInfo['pick_other'] == 0 ? "checked" : "" ?>>
-                        <label class="form-check-label" for="pick_other_no">NO</label>
-                    </div>
+
                     <p class="mb-0 fw-bold mt-3">WHO WILL BE RESPONSIBLE FOR FEEDING, GROOMING, AND GENERALLY CARING
                         FOR THE PET? <span class="text-danger">*</span>
                     </p>
@@ -289,16 +383,23 @@ if (isset($_POST['gmeet_date'])) {
                     <p class="mb-0 fw-bold mt-3">DO YOU PLAN TO ADOPT THIS PET AS A GIFT? <span
                             class="text-danger">*</span></p>
                     <!-- ------------>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="as_gift" class="form-check-input" id="as_gift_yes" value="1"
-                            <?= is_array($applicantInfo) && $applicantInfo['as_gift'] == 1 ? "checked" : "" ?>>
-                        <label class="form-check-label" for="as_gift_yes">YES</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="radio" required name="as_gift" class="form-check-input" id="as_gift_yes"
+                                    value="1" <?= is_array($applicantInfo) && $applicantInfo['as_gift'] == 1 ? "checked" : "" ?>>
+                                <label class="form-check-label" for="as_gift_yes">YES</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input type="radio" required name="as_gift" class="form-check-input" id="as_gift_no"
+                                    value="0" <?= is_array($applicantInfo) && $applicantInfo['as_gift'] == 0 ? "checked" : "" ?>>
+                                <label class="form-check-label" for="as_gift_no">NO</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="as_gift" class="form-check-input" id="as_gift_no" value="0"
-                            <?= is_array($applicantInfo) && $applicantInfo['as_gift'] == 0 ? "checked" : "" ?>>
-                        <label class="form-check-label" for="as_gift_no">NO</label>
-                    </div>
+
                     <!-- ------------>
                     <p class="mb-0 fw-bold mt-3">WHO WILL LOOK AFTER YOUR PET IF YOU GO ON VACATION OR IN CASE OF
                         EMERGENCY? <span class="text-danger">*</span>
@@ -306,30 +407,39 @@ if (isset($_POST['gmeet_date'])) {
                     <input type="text" name="alt_care" class="form-control mb-3 no-border" id="alt_care"
                         placeholder="Name" value="<?= is_array($applicantInfo) ? $applicantInfo['alt_care'] : "" ?>"
                         required>
-                    <p class="mb-0 fw-bold mt-3">WHICH OF THE FOLLOWING BEST DESCRIBES YOUR EXPERIENCE <span
-                            class="text-danger">*</span></p>
+                    <p class="mb-0 fw-bold mt-3">WHICH OF THE FOLLOWING BEST DESCRIBES YOUR PET OWNERSHIP
+                        EXPERIENCE<span class="text-danger">*</span></p>
                     <!-- ------------>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="owner_type" class="form-check-input" id="owner_type_new"
-                            value="new" <?= is_array($applicantInfo) && $applicantInfo['owner_type'] == "new" ? "checked" : "" ?>>
-                        <label class="form-check-label" for="owner_type_new">
-                            NEW PET OWNER (THIS WILL BE THE FIRST TIME OWNING A PET)
-                        </label>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <div class="form-check">
+                                <input type="radio" required name="owner_type" class="form-check-input"
+                                    id="owner_type_new" value="new" <?= is_array($applicantInfo) && $applicantInfo['owner_type'] == "new" ? "checked" : "" ?>>
+                                <label class="form-check-label" for="owner_type_new">
+                                    NEW PET OWNER (THIS WILL BE THE FIRST TIME OWNING A PET)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-check">
+                                <input type="radio" required name="owner_type" class="form-check-input"
+                                    id="owner_type_less_than" value="less_than" <?= is_array($applicantInfo) && $applicantInfo['owner_type'] == "less_than" ? "checked" : "" ?>>
+                                <label class="form-check-label" for="owner_type_less_than">
+                                    RECENT PET OWNER (MY FAMILY/I OWN/OWNED A PET LESS THAN 3 YEARS)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-check">
+                                <input type="radio" required name="owner_type" class="form-check-input"
+                                    id="owner_type_more_than" value="more_than" <?= is_array($applicantInfo) && $applicantInfo['owner_type'] == "more_than" ? "checked" : "" ?>>
+                                <label class="form-check-label" for="owner_type_more_than">
+                                    SEASONED PET OWNER (MY FAMILY/I OWN/OWNED A PET MORE THAN 3 YEARS)
+                                </label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="owner_type" class="form-check-input"
-                            id="owner_type_less_than" value="less_than" <?= is_array($applicantInfo) && $applicantInfo['owner_type'] == "less_than" ? "checked" : "" ?>>
-                        <label class="form-check-label" for="owner_type_less_than">
-                            RECENT PET OWNER (MY FAMILY/I OWN/OWNED A PET LESS THAN 3 YEARS)
-                        </label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="owner_type" class="form-check-input"
-                            id="owner_type_more_than" value="more_than" <?= is_array($applicantInfo) && $applicantInfo['owner_type'] == "more_than" ? "checked" : "" ?>>
-                        <label class="form-check-label" for="owner_type_more_than">
-                            SEASONED PET OWNER (MY FAMILY/I OWN/OWNED A PET MORE THAN 3 YEARS)
-                        </label>
-                    </div>
+
                     <!-- ------------>
                     <p class="mb-0 fw-bold mt-3">LIST ALL THE PETS YOU’VE HAD OR HAVE <span class="text-danger">*</span>
                     </p>
@@ -356,37 +466,51 @@ if (isset($_POST['gmeet_date'])) {
                     }
                     ?>
                     <!-- FRIEND -->
-                    <div class="form-check form-check-inline">
-                        <input type="checkbox" name="adopt_supremo[]" class="form-check-input" id="adopt_supremo_friend"
-                            value="friend" <?= in_array("friend", $adopt_supremo) ? "checked" : "" ?>>
-                        <label class="form-check-label" for="adopt_supremo_friend">FRIENDS</label>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <div class="form-check">
+                                <input type="checkbox" name="adopt_supremo[]" class="form-check-input"
+                                    id="adopt_supremo_friend" value="friend" <?= in_array("friend", $adopt_supremo) ? "checked" : "" ?>>
+                                <label class="form-check-label" for="adopt_supremo_friend">FRIENDS</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-check">
+                                <input type="checkbox" name="adopt_supremo[]" class="form-check-input"
+                                    id="adopt_supremo_facebook" value="facebook" <?= in_array("facebook", $adopt_supremo) ? "checked" : "" ?>>
+                                <label class="form-check-label" for="adopt_supremo_facebook">FACEBOOK</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-check">
+                                <input type="checkbox" name="adopt_supremo[]" class="form-check-input"
+                                    id="adopt_supremo_other" value="other" <?= in_array("other", $adopt_supremo) ? "checked" : "" ?>>
+                                <label class="form-check-label" for="adopt_supremo_other">OTHER</label>
+                            </div>
+                        </div>
                     </div>
-                    <!-- FACEBOOK -->
-                    <div class="form-check form-check-inline">
-                        <input type="checkbox" name="adopt_supremo[]" class="form-check-input"
-                            id="adopt_supremo_facebook" value="facebook" <?= in_array("facebook", $adopt_supremo) ? "checked" : "" ?>>
-                        <label class="form-check-label" for="adopt_supremo_facebook">FACEBOOK</label>
-                    </div>
-                    <!-- OTHER -->
-                    <div class="form-check form-check-inline">
-                        <input type="checkbox" name="adopt_supremo[]" class="form-check-input" id="adopt_supremo_other"
-                            value="other" <?= in_array("other", $adopt_supremo) ? "checked" : "" ?>>
-                        <label class="form-check-label" for="adopt_supremo_other">OTHER</label>
-                    </div>
+
                     <!-- ------------>
                     <p class="mb-0 fw-bold mt-3">HAVE YOU ADOPTED FROM SUPREMO BEFORE? <span
                             class="text-danger">*</span></p>
                     <!-- ------------>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="past_adopt" class="form-check-input" id="past_adopt_yes"
-                            value="1" <?= is_array($applicantInfo) && $applicantInfo['past_adopt'] == 1 ? "checked" : "" ?>>
-                        <label class="form-check-label" for="past_adopt_yes">YES</label>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <div class="form-check">
+                                <input type="radio" required name="past_adopt" class="form-check-input"
+                                    id="past_adopt_yes" value="1" <?= is_array($applicantInfo) && $applicantInfo['past_adopt'] == 1 ? "checked" : "" ?>>
+                                <label class="form-check-label" for="past_adopt_yes">YES</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-check">
+                                <input type="radio" required name="past_adopt" class="form-check-input"
+                                    id="past_adopt_no" value="0" <?= is_array($applicantInfo) && $applicantInfo['past_adopt'] == 0 ? "checked" : "" ?>>
+                                <label class="form-check-label" for="past_adopt_no">NO</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="past_adopt" class="form-check-input" id="past_adopt_no"
-                            value="0" <?= is_array($applicantInfo) && $applicantInfo['past_adopt'] == 0 ? "checked" : "" ?>>
-                        <label class="form-check-label" for="past_adopt_no">NO</label>
-                    </div>
+
                     <!-- ------------>
                     <p class="mb-0 fw-bold mt-3">WHAT MADE YOU CONSIDER ADOPTING A RESCUE? <span
                             class="text-danger">*</span>
@@ -635,16 +759,23 @@ if (isset($_POST['gmeet_date'])) {
                     <p class="mb-0 fw-bold mt-3">Will you be able to visit the shelter for the meet-and-greet? <span
                             class="text-danger">*</span></p>
                     <!-- ------------>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="meet_greet" class="form-check-input" id="meet_greet_yes"
-                            value="1" <?= is_array($applicantInfo) && $applicantInfo['meet_greet'] == 1 ? "checked" : "" ?>>
-                        <label class="form-check-label" for="meet_greet_yes">YES</label>
+                    <div class="row">
+                        <div class="col-md-6 mb-2">
+                            <div class="form-check">
+                                <input type="radio" required name="meet_greet" class="form-check-input"
+                                    id="meet_greet_yes" value="1" <?= is_array($applicantInfo) && $applicantInfo['meet_greet'] == 1 ? "checked" : "" ?>>
+                                <label class="form-check-label" for="meet_greet_yes">YES</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <div class="form-check">
+                                <input type="radio" required name="meet_greet" class="form-check-input"
+                                    id="meet_greet_no" value="0" <?= is_array($applicantInfo) && $applicantInfo['meet_greet'] == 0 ? "checked" : "" ?>>
+                                <label class="form-check-label" for="meet_greet_no">NO</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input type="radio" required name="meet_greet" class="form-check-input" id="meet_greet_no"
-                            value="0" <?= is_array($applicantInfo) && $applicantInfo['meet_greet'] == 0 ? "checked" : "" ?>>
-                        <label class="form-check-label" for="meet_greet_no">NO</label>
-                    </div>
+
                     <!-- ------------>
 
 

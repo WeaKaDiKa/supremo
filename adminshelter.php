@@ -40,22 +40,87 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submiteditvisit'])) {
                         $email = $user['email'];
                         $name = $user['fname'];
 
-                        // Determine email content based on status
-                        $subject = "Shelter Visit Status Update";
+                        $subject = "";
                         $message = "";
+                        // Initialize visit date and time
+                        $visit_date = '';
+                        $visit_time = '';
 
+                        // Fetch schedule date and time if approved
                         if ($status === 'approved') {
-                            $message = "Hi $name,\n\nYour shelter visit request has been approved. We look forward to seeing you!";
+                            $sql = "SELECT schedule_date, schedule_time FROM visit WHERE visitid = ?";
+                            $stmt = $conn->prepare($sql);
+                            $stmt->bind_param("i", $visitid);
+                            $stmt->execute();
+                            $stmt->bind_result($visit_date, $visit_time);
+                            $stmt->fetch();
+                            $stmt->close();
+                        }
+                        if ($status === 'approved') {
+                            $subject = "Shelter Visit Booking Confirmation";
+                            $message = "
+Hi $name,
+
+Great news! Your shelter visit request has been approved.
+
+Your visit is scheduled for **$visit_date, at $visit_time**. We look forward to seeing you then!
+
+**Here's where to find us:**
+11 Pacencia St., Tugatog, Malabon City, Philippines
+
+**Our visiting hours are:**
+Monday to Saturday, 9:00 AM – 5:00 PM
+
+**A few reminders before your visit:**
+• Please review and keep in mind the reminders and Liability Waiver you agreed to during booking. By coming to the shelter, you're kindly confirming that you understand and accept its terms and conditions.  
+• Bring a valid ID for check-in.  
+• Arrive on time so you can spend enough quality time with the rescues.
+
+We look forward to seeing you soon!
+
+Best regards,  
+**The Supremo Fur Babies Team**
+";
                         } elseif ($status === 'declined') {
-                            $message = "Hi $name,\n\nWe regret to inform you that your shelter visit request was declined. Please contact us if you have any questions.";
+                            $subject = "Shelter Visit Status Update";
+                            $message = "
+Hi $name,
+
+Thank you for your interest in visiting **Supremo Fur Babies Malabon Shelter**.
+
+After reviewing your request, we’re sorry to inform you that your shelter visit scheduled for **$visit_date, at $visit_time** has been declined.
+
+**Reason:** $decline_reason
+
+If you still wish to visit, you're very welcome to select a new date and time that works best for you.
+
+👉 [Click here to book another visit](https://supremofurbabies.great-site.net/visit.php)
+
+If you have any questions, feel free to reach out—we’re always happy to assist.
+
+Warm regards,  
+**Supremo Fur Babies Team**
+";
                         } elseif ($status === 'scheduled') {
-                            $message = "Hi $name,\n\nYour shelter visit has been successfully scheduled. Thank you!";
+                            $subject = "Shelter Visit Scheduled";
+                            $message = "
+Hi $name,
+
+Your shelter visit has been successfully scheduled for **$visit_date, at $visit_time**.
+
+We look forward to seeing you soon!
+
+Best,  
+**Supremo Fur Babies Team**
+";
                         } else {
+                            $subject = "Shelter Visit Status Update";
                             $message = "Hi $name,\n\nYour visit status has been updated to: $status.";
                         }
 
                         // Send email
-                        sendmail($email, $name, $subject, $message);
+                        sendmail($email, $name, $subject, nl2br($message));
+
                     }
                     $stmtUser->close();
                 }
