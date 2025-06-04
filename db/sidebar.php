@@ -6,6 +6,9 @@ $visitCount = $visitQuery ? $visitQuery->fetch_assoc()['total'] : 0;
 // Count pending rescue reports
 $rescueQuery = $conn->query("SELECT COUNT(*) AS total FROM rescue WHERE status = 'pending'");
 $rescueCount = $rescueQuery ? $rescueQuery->fetch_assoc()['total'] : 0;
+
+$applicantResult = $conn->query("SELECT COUNT(*) AS total FROM applicant WHERE status = 'pending'");
+$applicantCount = $applicantResult ? $applicantResult->fetch_assoc()['total'] : 0;
 ?>
 
 <nav id="sidebar">
@@ -23,7 +26,10 @@ $rescueCount = $rescueQuery ? $rescueQuery->fetch_assoc()['total'] : 0;
 
     <ul class="list-unstyled mt-3">
         <li>
-            <a href="adminadoption.php" class="lilita  <?= $page == "adoption" ? "active" : "" ?>">Adoption</a>
+            <a href="adminadoption.php" class="lilita  <?= $page == "adoption" ? "active" : "" ?>"><p class="m-0">Adoption</p>
+                    <?php if ($applicantCount > 0): ?>
+                        <span class="badge dark-accent-bg text-white"><?= $applicantCount ?></span>
+                    <?php endif; ?></a>
         </li>
         <li>
             <a href="adminshelter.php" class="lilita <?= $page == "visit" ? "active" : "" ?>">

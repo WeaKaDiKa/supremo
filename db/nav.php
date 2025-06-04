@@ -110,10 +110,15 @@
                     $reportRow = mysqli_fetch_assoc($reportResult);
                     $reportCount = $reportRow['total'] ?? 0;
 
+
+                    $applicantResult = mysqli_query($conn, "SELECT COUNT(*) AS total FROM applicant WHERE status = 'pending'");
+                    $applicantRow = mysqli_fetch_assoc($applicantResult);
+                    $applicantCount = $applicantRow['total'] ?? 0;
+
                     // Total notifications
-                    $totalNotifications = $appCount + $reportCount;
+                    $totalNotifications = $appCount + $reportCount + $applicantCount;
                     ?>
-                  <!--   <li class="nav-item me-4">
+                    <!--   <li class="nav-item me-4">
                         <div class="notification-bell position-relative">
                             <i class="bi bi-bell-fill" style="font-size: 1.5rem; color: #ffc50f;"></i>
                             <?php //if ($totalNotifications > 0): ?>
