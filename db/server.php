@@ -1,7 +1,7 @@
 <?php
 
 require_once 'serverinfo.php';
-$conn = new mysqli($host, $username, $password, $database, 3318);
+$conn = new mysqli($host, $username, $password, $database);
 
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
