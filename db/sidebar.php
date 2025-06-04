@@ -26,10 +26,15 @@ $applicantCount = $applicantResult ? $applicantResult->fetch_assoc()['total'] : 
 
     <ul class="list-unstyled mt-3">
         <li>
-            <a href="adminadoption.php" class="lilita  <?= $page == "adoption" ? "active" : "" ?>"><p class="m-0">Adoption</p>
+            <a href="adminadoption.php" class="lilita  <?= $page == "adoption" ? "active" : "" ?>">
+                <div class="d-flex justify-content-between">
+                    <p class="m-0">Adoption</p>
                     <?php if ($applicantCount > 0): ?>
                         <span class="badge dark-accent-bg text-white"><?= $applicantCount ?></span>
-                    <?php endif; ?></a>
+                    <?php endif; ?>
+                </div>
+            </a>
+
         </li>
         <li>
             <a href="adminshelter.php" class="lilita <?= $page == "visit" ? "active" : "" ?>">

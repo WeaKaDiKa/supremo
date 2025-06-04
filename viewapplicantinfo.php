@@ -64,10 +64,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['applicantedit'])) {
                  <p><a href='$gmeetlink' target='_blank' style='background-color:#1a73e8;color:#fff;padding:10px 20px;text-decoration:none;border-radius:4px;'>Join Google Meet</a></p>";
     } elseif ($status === 'Approved') {
         $message .= "<p>Congratulations! We're excited to inform you that your adoption application has been <strong>approved</strong>, and you have successfully passed the interview.</p>
-                 <p>We're thrilled to help you take the next step in welcoming your new furry companion into your home!</p>
-                 <p>To schedule your preferred date to visit the shelter and pick up your chosen pet, please click the link below:</p>
-                 <p>👉 <a href='http://supremofurbabies.great-site.net/visit.php' target='_blank' style='color:#1a73e8;text-decoration:none;'><strong>Schedule Your Shelter Visit</strong></a></p>
-                 <p>We look forward to seeing you soon and officially uniting you with your future fur-ever friend!</p>";
+             <p>We're thrilled to help you take the next step in welcoming your new furry companion into your home!</p>
+             <p>To schedule your preferred date to visit the shelter and pick up your chosen pet, please click the button below:</p>
+             <p>
+                <a href='http://supremofurbabies.great-site.net/visit.php' target='_blank' 
+                   style='display: inline-block; background-color: #7d543a; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;'>
+                   Schedule Your Shelter Visit
+                </a>
+             </p>
+             <p>We look forward to seeing you soon and officially uniting you with your future fur-ever friend!</p>";
+
     } elseif ($status === 'Disapproved') {
         $message .= "<p>Thank you for your interest in giving a rescue animal a loving home through Supremo Fur Babies.</p>
                  <p>After careful consideration, we regret to inform you that your adoption application has <strong>not been approved</strong> at this time. Based on the information provided, we believe that certain requirements were not fully met to ensure the best possible match and environment for our rescue animals.</p>

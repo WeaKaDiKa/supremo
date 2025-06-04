@@ -1,6 +1,18 @@
 <?php
 require_once('db/server.php');
-$sql = "SELECT petid, name, gender, age, spayed, description, color, status, pet_condition, rescue_date FROM pet";
+$sql = "
+SELECT p.*, pp.picurl AS pet_pic
+FROM pet p
+LEFT JOIN (
+    SELECT petid, MIN(petpicsid) AS min_pic_id
+    FROM petpics
+    GROUP BY petid
+) firstpics ON p.petid = firstpics.petid
+LEFT JOIN petpics pp ON pp.petpicsid = firstpics.min_pic_id
+
+ORDER BY p.petid DESC
+";
+
 $result = $conn->query($sql);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['newPet'])) {
@@ -23,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['newPet'])) {
     if ($stmt->execute()) {
         // Get the inserted pet ID
         $petid = $stmt->insert_id;
-       
+
 
         // Handle Multiple Image Uploads
         if (!empty($_FILES["petpics"]["name"][0])) {
@@ -73,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['deletePet'])) {
     }
 
     // Delete image records
-    $stmt=$conn->prepare("DELETE FROM petpics WHERE petid = ?");
+    $stmt = $conn->prepare("DELETE FROM petpics WHERE petid = ?");
     $stmt->bind_param("i", $petid);
     $stmt->execute();
 
@@ -189,9 +201,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editPet'])) {
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
 
-                        <h1 class="lilita dark-accent-fg">MANAGE PETS</h1>
-                        <button type="button" class="btn mid-accent-bg text-white btn-sm lilita" data-bs-toggle="modal" data-bs-target="#newModal">NEW</button>
-</div>
+                            <h1 class="lilita dark-accent-fg">MANAGE PETS</h1>
+                            <button type="button" class="btn mid-accent-bg text-white btn-sm lilita"
+                                data-bs-toggle="modal" data-bs-target="#newModal">NEW</button>
+                        </div>
                         <hr>
                         <div style="overflow-x: scroll;">
                             <table id="dataTable" class="table table-striped table-bordered ">
@@ -201,10 +214,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editPet'])) {
                                         <th>Name</th>
                                         <th>Gender</th>
                                         <th>Age (months)</th>
-                                      
+
                                         <th>Color</th>
 
-                                     
+
                                         <th>Rescue Date</th>
                                         <th>Status</th>
                                         <th>Action</th>
@@ -214,46 +227,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editPet'])) {
                                     <?php if ($result->num_rows > 0): ?>
                                         <?php while ($row = $result->fetch_assoc()): ?>
                                             <tr>
-                                                <td><?= $row['petid']; ?></td>
+                                                <td>
+                                                    <?php if (!empty($row['pet_pic'])): ?>
+                                                        <img src="assets/img/uploads/pets/<?= htmlspecialchars($row['pet_pic']); ?>" alt="Pet Image"
+                                                            width="24" height="24" class="rounded-circle me-1"
+                                                            style="object-fit: cover;">
+                                                    <?php endif; ?>
+                                                    <?= $row['petid']; ?>
+                                                </td>
                                                 <td><?= ucfirst($row['name']); ?></td>
                                                 <td><?= ucfirst($row['gender']); ?></td>
                                                 <td><?= $row['age']; ?></td>
-                                           
+
                                                 <td><?= ucfirst($row['color']); ?></td>
-                                      
+
                                                 <td><?= date("F j, Y", strtotime($row['rescue_date'])); ?></td>
                                                 <td><?= ucfirst($row['status']); ?></td>
                                                 <td class="text-center">
                                                     <!-- Add data-src attribute -->
-                                                  <!-- View Button -->
-<button type="button" class="btn dark-accent-bg text-white btn-sm openModal"
-    data-bs-toggle="modal" data-bs-target="#imageModal"
-    data-petid="<?= htmlspecialchars($row['petid']) ?>">
-    <i class="bi bi-eye"></i>   
-</button>
+                                                    <!-- View Button -->
+                                                    <button type="button" class="btn dark-accent-bg text-white btn-sm openModal"
+                                                        data-bs-toggle="modal" data-bs-target="#imageModal"
+                                                        data-petid="<?= htmlspecialchars($row['petid']) ?>">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
 
-<!-- Edit Button -->
-<button type="button" class="btn mid-accent-bg text-white btn-sm editModal"
-    data-bs-toggle="modal" data-bs-target="#editModal"
-    data-petid="<?= htmlspecialchars($row['petid']) ?>"
-    data-name="<?= htmlspecialchars($row['name']) ?>"
-    data-gender="<?= htmlspecialchars($row['gender']) ?>"
-    data-age="<?= htmlspecialchars($row['age']) ?>"
-    data-description="<?= htmlspecialchars($row['description']) ?>"
-    data-color="<?= htmlspecialchars($row['color']) ?>"
-    data-condition="<?= htmlspecialchars($row['pet_condition']) ?>"
-    data-date="<?= htmlspecialchars(date("Y-m-d", strtotime($row['rescue_date']))) ?>"
-    data-status="<?= htmlspecialchars($row['status']) ?>">
-    <i class="bi bi-pencil-square"></i>
-</button>
+                                                    <!-- Edit Button -->
+                                                    <button type="button" class="btn mid-accent-bg text-white btn-sm editModal"
+                                                        data-bs-toggle="modal" data-bs-target="#editModal"
+                                                        data-petid="<?= htmlspecialchars($row['petid']) ?>"
+                                                        data-name="<?= htmlspecialchars($row['name']) ?>"
+                                                        data-gender="<?= htmlspecialchars($row['gender']) ?>"
+                                                        data-age="<?= htmlspecialchars($row['age']) ?>"
+                                                        data-description="<?= htmlspecialchars($row['description']) ?>"
+                                                        data-color="<?= htmlspecialchars($row['color']) ?>"
+                                                        data-condition="<?= htmlspecialchars($row['pet_condition']) ?>"
+                                                        data-date="<?= htmlspecialchars(date("Y-m-d", strtotime($row['rescue_date']))) ?>"
+                                                        data-status="<?= htmlspecialchars($row['status']) ?>">
+                                                        <i class="bi bi-pencil-square"></i>
+                                                    </button>
 
-<!-- Delete Button -->
-<button type="button" class="btn btn-danger btn-sm" 
-    data-bs-toggle="modal" 
-    data-bs-target="#deletePetModal" 
-    onclick="setDeletePetId(<?= htmlspecialchars($row['petid']) ?>)">
-    <i class="bi bi-trash"></i>
-</button>
+                                                    <!-- Delete Button -->
+                                                    <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal"
+                                                        data-bs-target="#deletePetModal"
+                                                        onclick="setDeletePetId(<?= htmlspecialchars($row['petid']) ?>)">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
 
 
                                                 </td>
@@ -305,7 +324,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editPet'])) {
                             <form method="post" enctype="multipart/form-data">
                                 <!-- Name -->
 
-           
+
                                 <div class="form-group mb-3">
                                     <label for="name">Pet Name <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="name" required>
@@ -314,7 +333,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editPet'])) {
                                 <!-- Gender -->
                                 <div class="form-group mb-3">
                                     <label for="gender">Gender <span class="text-danger">*</span></label>
-                                    <select class="form-control"  name="gender" required>
+                                    <select class="form-control" name="gender" required>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
                                     </select>
@@ -329,8 +348,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editPet'])) {
                                 <!-- Description -->
                                 <div class="form-group mb-3">
                                     <label for="description">Description</label>
-                                    <textarea class="form-control" name="description"
-                                        rows="3"></textarea>
+                                    <textarea class="form-control" name="description" rows="3"></textarea>
                                 </div>
 
                                 <!-- Color -->
@@ -377,13 +395,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editPet'])) {
                                 <div class="form-group mb-3">
                                     <label for="petpics">Upload Pet Images (Multiple Allowed) <span
                                             class="text-danger">*</span></label>
-                                    <input type="file" class="form-control-file" name="petpics[]"
-                                        accept="image/*" multiple required>
+                                    <input type="file" class="form-control-file" name="petpics[]" accept="image/*"
+                                        multiple required>
                                 </div>
 
                                 <!-- Submit Button -->
                                 <div class="d-flex align-items-center justify-content-center">
-                                    <button type="submit" name="newPet" class="btn btn-primary p-2 lilita">Submit</button>
+                                    <button type="submit" name="newPet"
+                                        class="btn btn-primary p-2 lilita">Submit</button>
                                 </div>
                             </form>
 
@@ -455,8 +474,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editPet'])) {
                                     </select>
                                 </div>
 
-               
-                              
+
+
                                 <!-- Status -->
                                 <div class="form-group mb-3">
                                     <label for="status">Status</label>
@@ -466,13 +485,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editPet'])) {
                                         <option value="unavailable">Unavailable</option>
                                     </select>
                                 </div>
-  <!-- Multiple Pet Images -->
-  <div class="form-group mb-3">
+                                <!-- Multiple Pet Images -->
+                                <div class="form-group mb-3">
                                     <label for="petpics">Upload Pet Images (Multiple Allowed) <span
                                             class="text-danger">*</span></label>
                                     <input type="file" class="form-control-file" id="petpics" name="petpics[]"
                                         accept="image/*" multiple><br>
-                                        <small class="text-muted">Uploading new pictures removes old pictures</small>
+                                    <small class="text-muted">Uploading new pictures removes old pictures</small>
                                 </div>
 
                                 <!-- Submit and Adopt Buttons -->
@@ -488,32 +507,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editPet'])) {
                     </div>
                 </div>
             </div>
-<!-- Delete Pet Modal -->
-<div class="modal fade" id="deletePetModal" tabindex="-1" role="dialog" aria-labelledby="deletePetLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <form method="post">
-      <input type="hidden" name="delete_petid" id="delete_petid">
-      <div class="modal-content">
-        <div class="modal-header bg-danger text-white">
-          <h5 class="modal-title" id="deletePetLabel">Confirm Deletion</h5>
-      
-        </div>
-        <div class="modal-body">
-          Are you sure you want to delete this pet and all associated images?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary lilita" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" name="deletePet" class="btn btn-danger lilita">Delete</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
+            <!-- Delete Pet Modal -->
+            <div class="modal fade" id="deletePetModal" tabindex="-1" role="dialog" aria-labelledby="deletePetLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <form method="post">
+                        <input type="hidden" name="delete_petid" id="delete_petid">
+                        <div class="modal-content">
+                            <div class="modal-header bg-danger text-white">
+                                <h5 class="modal-title" id="deletePetLabel">Confirm Deletion</h5>
+
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this pet and all associated images?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary lilita"
+                                    data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" name="deletePet" class="btn btn-danger lilita">Delete</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
             <script>
                 function setDeletePetId(id) {
-    document.getElementById("delete_petid").value = id;
-}
+                    document.getElementById("delete_petid").value = id;
+                }
                 $(document).ready(function () {
                     $('#dataTable').DataTable({
                         "paging": true,
