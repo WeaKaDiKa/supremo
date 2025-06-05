@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submiteditvisit'])) {
                             $stmt->execute();
                             $stmt->bind_result($visit_date, $visit_time);
                             $stmt->fetch();
-                        
+
                         }
                         if ($status === 'approved') {
                             $subject = "Shelter Visit Booking Confirmation";
@@ -94,7 +94,10 @@ After reviewing your request, we’re sorry to inform you that your shelter visi
 
 If you still wish to visit, you're very welcome to select a new date and time that works best for you.
 
-👉 [Click here to book another visit](https://supremofurbabies.great-site.net/visit.php)
+<a href='http://supremofurbabies.great-site.net/visit.php' target='_blank' 
+                   style='display: inline-block; background-color: #7d543a; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;'>
+                   Schedule Your Shelter Visit
+                </a>
 
 If you have any questions, feel free to reach out—we’re always happy to assist.
 
@@ -122,7 +125,7 @@ Best,
                         sendmail($email, $name, $subject, nl2br($message));
 
                     }
-               
+
                 }
 
                 $_SESSION['errorMessage'] = "Visit status updated successfully";
@@ -133,7 +136,7 @@ Best,
                 $_SESSION['errorType'] = "danger";
                 $_SESSION['errorHead'] = "Warning!";
             }
-          
+
         } else {
             $_SESSION['errorMessage'] = "Error preparing statement.";
             $_SESSION['errorType'] = "danger";
