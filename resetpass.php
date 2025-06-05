@@ -75,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['resetbtn'])) {
 
         <?php require_once 'db/alert.php'; ?>
         <div class="container my-5">
-            <div class="light-accent-bg py-5 text-center position-relative">
+            <div class="light-accent-bg p-3 text-center position-relative">
                 <div class="dark-accent-bg text-white py-2 px-4 d-inline-block lilita fs-4 mb-3 fw-bold">
                     <h1 class="m-0 p-0">RESET PASSWORD</h1>
                 </div>
@@ -85,8 +85,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['resetbtn'])) {
                 <?php require_once 'db/alert.php'; ?>
 
                 <form method="post">
-                    <div class="mb-3 text-center mx-auto" style="max-width: 400px;">
-                        <label for="password" class="form-label special-label">NEW PASSWORD <span
+   <!--                  <div class="mb-3 text-center mx-auto" style="max-width: 400px;">
+                        <label for="password" class="form-label lilita">NEW PASSWORD <span
                                 class="text-danger">*</span></label>
                         <input type="password" name="password" class="form-control" id="password" required
                             pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[\d\W]).{8,}$"
@@ -94,11 +94,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['resetbtn'])) {
                     </div>
 
                     <div class="mb-3 text-center mx-auto" style="max-width: 400px;">
-                        <label for="confirm_password" class="form-label special-label">CONFIRM PASSWORD <span
+                        <label for="confirm_password" class="form-label lilita">CONFIRM PASSWORD <span
                                 class="text-danger">*</span></label>
                         <input type="password" name="confirm_password" class="form-control" id="confirm_password"
                             required>
+                    </div> -->
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label lilita">
+                            Password<span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group">
+                            <input type="password" name="password" class="form-control" id="password" required
+                                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[\d\W]).{8,}$"
+                                title="Password must be at least 8 characters long, include 1 lowercase, 1 uppercase, and 1 number or special character.">
+                            <button class="btn btn-outline-secondary" type="button"
+                                onclick="togglePassword('password', 'toggleIcon1')">
+                                <i id="toggleIcon1" class="bi bi-eye-slash"></i>
+                            </button>
+                        </div>
                     </div>
+
+                    <div class="mb-3">
+                        <label for="confirm-password" class="form-label lilita">
+                            Confirm Password<span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="confirm-password" required>
+                            <button class="btn btn-outline-secondary" type="button"
+                                onclick="togglePassword('confirm-password', 'toggleIcon2')">
+                                <i id="toggleIcon2" class="bi bi-eye-slash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <script>
+                        function togglePassword(inputId, iconId) {
+                            const input = document.getElementById(inputId);
+                            const icon = document.getElementById(iconId);
+                            if (input.type === "password") {
+                                input.type = "text";
+                                icon.classList.remove("bi-eye-slash");
+                                icon.classList.add("bi-eye");
+                            } else {
+                                input.type = "password";
+                                icon.classList.remove("bi-eye");
+                                icon.classList.add("bi-eye-slash");
+                            }
+                        }
+                    </script>
 
                     <div class="mx-auto" style="max-width: 400px;">
                         <button type="submit" name="resetbtn" class="btn w-100 lilita text-white mid-accent-bg">

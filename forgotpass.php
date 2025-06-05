@@ -81,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['forgotbtn'])) {
                 <!-- Forgot password form -->
                 <form method="post">
                     <div class="mb-3 text-center mx-auto" style="max-width: 400px;">
-                        <label for="email" class="form-label special-label">EMAIL <span class="text-danger">*</span></label>
+                        <label for="email" class="form-label lilita">EMAIL <span class="text-danger">*</span></label>
                         <input type="email" name="email" class="form-control" id="email" required>
                     </div>
 

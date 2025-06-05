@@ -60,7 +60,7 @@ date_default_timezone_set("Asia/Manila");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['reportsubmit'])) {
 
-  
+
   // Validate required fields
   if (empty($_POST['animalType']) || empty($_POST['animalLocation'])) {
     $_SESSION['errorMessage'] = "Please fill in all required fields.";
@@ -104,9 +104,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['reportsubmit'])) {
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ssssis", $pet_type, $pet_condition, $location, $picurl, $userid, $additionalInfo);
     if ($stmt->execute()) {
-      $_SESSION['errorMessage'] = "Rescue report submitted successfully.";
+      $_SESSION['errorMessage'] = "Your rescue request has been submitted successfully. Our team will review the details and respond as soon as possible. If urgent, please ensure the animal is in safe place while waiting for assistance.";
       $_SESSION['errorType'] = "success";
-      $_SESSION['errorHead'] = "Success!";
+      $_SESSION['errorHead'] = "Thank you for reporting!";
 
     } else {
       $_SESSION['errorMessage'] = "Error submitting report.";

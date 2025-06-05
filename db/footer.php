@@ -54,7 +54,7 @@
                 <p class="lh-0 mb-0" style="font-size:10px;"><b>DISCLAIMER</b></p>
                 <p class="lh-0" style="font-size:10px;">Supremo Furbabies only conducts rescues within Malabon City. For
                     cases outside our area,
-                    please contact local shelters. TThank you for understanding and helping us save lives!
+                    please contact local shelters. Thank you for understanding and helping us save lives!
                     🐾💙</p>
                 <?php if (isset($_SESSION['userid'])):
                     ?>

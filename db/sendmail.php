@@ -23,7 +23,7 @@ function sendmail($email, $name, $subject, $message)
         $mail->Port = 587;
 
         // Recipients
-        $mail->setFrom('cyadolar@gmail.com', 'Supremo Fur Babies');
+        $mail->setFrom('supremofurbabies@gmail.com', 'Supremo Fur Babies');
         $mail->addAddress($email, $name);
 
         // Content
@@ -33,8 +33,7 @@ function sendmail($email, $name, $subject, $message)
             <h1>$subject</h1>
 
             <p>$message</p>
-            <p>Best regards,</p>
-            <p>Supremo Fur Babies</p>
+
         ";
 
         $mail->send();

@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submiteditvisit'])) {
                             $stmt->execute();
                             $stmt->bind_result($visit_date, $visit_time);
                             $stmt->fetch();
-                            $stmt->close();
+                        
                         }
                         if ($status === 'approved') {
                             $subject = "Shelter Visit Booking Confirmation";
@@ -63,15 +63,15 @@ Hi $name,
 
 Great news! Your shelter visit request has been approved.
 
-Your visit is scheduled for **$visit_date, at $visit_time**. We look forward to seeing you then!
+Your visit is scheduled for <b>$visit_date, at $visit_time</b>. We look forward to seeing you then!
 
-**Here's where to find us:**
+<b>Here's where to find us:</b>
 11 Pacencia St., Tugatog, Malabon City, Philippines
 
-**Our visiting hours are:**
+<b>Our visiting hours are:</b>
 Monday to Saturday, 9:00 AM – 5:00 PM
 
-**A few reminders before your visit:**
+<b>A few reminders before your visit:</b>
 • Please review and keep in mind the reminders and Liability Waiver you agreed to during booking. By coming to the shelter, you're kindly confirming that you understand and accept its terms and conditions.  
 • Bring a valid ID for check-in.  
 • Arrive on time so you can spend enough quality time with the rescues.
@@ -79,18 +79,18 @@ Monday to Saturday, 9:00 AM – 5:00 PM
 We look forward to seeing you soon!
 
 Best regards,  
-**The Supremo Fur Babies Team**
+<b>The Supremo Fur Babies Team</b>
 ";
                         } elseif ($status === 'declined') {
                             $subject = "Shelter Visit Status Update";
                             $message = "
 Hi $name,
 
-Thank you for your interest in visiting **Supremo Fur Babies Malabon Shelter**.
+Thank you for your interest in visiting <b>Supremo Fur Babies Malabon Shelter</b>.
 
-After reviewing your request, we’re sorry to inform you that your shelter visit scheduled for **$visit_date, at $visit_time** has been declined.
+After reviewing your request, we’re sorry to inform you that your shelter visit scheduled for <b>$visit_date, at $visit_time</b> has been declined.
 
-**Reason:** $decline_reason
+<b>Reason:</b> $decline_reason
 
 If you still wish to visit, you're very welcome to select a new date and time that works best for you.
 
@@ -99,19 +99,19 @@ If you still wish to visit, you're very welcome to select a new date and time th
 If you have any questions, feel free to reach out—we’re always happy to assist.
 
 Warm regards,  
-**Supremo Fur Babies Team**
+<b>Supremo Fur Babies Team</b>
 ";
                         } elseif ($status === 'scheduled') {
                             $subject = "Shelter Visit Scheduled";
                             $message = "
 Hi $name,
 
-Your shelter visit has been successfully scheduled for **$visit_date, at $visit_time**.
+Your shelter visit has been successfully scheduled for <b>$visit_date, at $visit_time</b>.
 
 We look forward to seeing you soon!
 
 Best,  
-**Supremo Fur Babies Team**
+<b>Supremo Fur Babies Team</b>
 ";
                         } else {
                             $subject = "Shelter Visit Status Update";
@@ -122,7 +122,7 @@ Best,
                         sendmail($email, $name, $subject, nl2br($message));
 
                     }
-                    $stmtUser->close();
+               
                 }
 
                 $_SESSION['errorMessage'] = "Visit status updated successfully";
@@ -133,7 +133,7 @@ Best,
                 $_SESSION['errorType'] = "danger";
                 $_SESSION['errorHead'] = "Warning!";
             }
-            $stmt->close();
+          
         } else {
             $_SESSION['errorMessage'] = "Error preparing statement.";
             $_SESSION['errorType'] = "danger";
