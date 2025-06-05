@@ -230,7 +230,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['editPet'])) {
                                                 <td>
                                                     <?php if (!empty($row['pet_pic'])): ?>
                                                         <img src="assets/img/uploads/pets/<?= htmlspecialchars($row['pet_pic']); ?>" alt="Pet Image"
-                                                            width="24" height="24" class="rounded-circle me-1"
+                                                            width="35" height="35" class="rounded-circle me-1"
                                                             style="object-fit: cover;">
                                                     <?php endif; ?>
                                                     <?= $row['petid']; ?>
