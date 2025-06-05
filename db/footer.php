@@ -30,9 +30,10 @@
 </footer>
 <div class="position-fixed me-3 bottom-0 end-0" style="z-index:1000; transform:translateY(-15%)!important;">
     <div class="social-icons d-flex align-items-end my-auto justify-content-around">
-        <a href="https://www.facebook.com/share/192zHGyWSs/?mibextid=wwXIfr" target="_blank"><img src="assets/img/fb.png" class="mb-2"
+        <a href="https://www.facebook.com/share/192zHGyWSs/?mibextid=wwXIfr" target="_blank"><img
+                src="assets/img/fb.png" class="mb-2"
                 style="width:50px; background-color:white; border-radius: 50%;"></a>
-     
+
         <div class="dark-accent-bg d-flex align-items-center justify-content-center ps-3"
             style=" border-radius: 50px; height:50px;">
             <p class="lilita text-white m-0 p-0">REPORT TO US</p>
@@ -142,6 +143,10 @@
                                 team)</label>
                             <textarea class="form-control" id="additionalInfo" name="additionalInfo" rows="4"
                                 placeholder="Provide any other relevant information"></textarea>
+                        </div>
+                        <div class="text-center mb-3">
+                            <p><b>For urgent rescue requests, you may also contact us directly through <b>text or call at
+                                        0995 427 4925 (Jenny Torres). We're here to help as quickly as possible.</b></p>
                         </div>
                         <div class="d-flex align-items-center justify-content-center">
                             <button type="submit" name="reportsubmit"

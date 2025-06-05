@@ -109,16 +109,29 @@ Warm regards,
                             $message = "
 Hi $name,
 
-Your shelter visit has been successfully scheduled for <b>$visit_date, at $visit_time</b>.
+Great news! Your shelter visit request has been updated.
+
+Your visit for <b>$visit_date, at $visit_time</b> is now $status
+
+<b>Here's where to find us:</b>
+11 Pacencia St., Tugatog, Malabon City, Philippines
+
+<b>Our visiting hours are:</b>
+Monday to Saturday, 9:00 AM – 5:00 PM
+
+<b>A few reminders before your visit:</b>
+• Please review and keep in mind the reminders and Liability Waiver you agreed to during booking. By coming to the shelter, you're kindly confirming that you understand and accept its terms and conditions.  
+• Bring a valid ID for check-in.  
+• Arrive on time so you can spend enough quality time with the rescues.
 
 We look forward to seeing you soon!
 
-Best,  
-<b>Supremo Fur Babies Team</b>
+Best regards,  
+<b>The Supremo Fur Babies Team</b>
 ";
                         } else {
                             $subject = "Shelter Visit Status Update";
-                            $message = "Hi $name,\n\nYour visit status has been updated to: $status.";
+                            $message = "Hi $name, Your visit status has been updated to: $status.";
                         }
 
                         // Send email

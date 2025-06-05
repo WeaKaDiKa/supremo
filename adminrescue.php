@@ -31,7 +31,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submitPet'])) {
 
         // Send email for not rescued
         $subject = "Rescue Status Update";
-        $message = "Hello $name,\n\nWe regret to inform you that the animal you reported could not be rescued. Thank you for your concern and support.";
+
+        $message = "Dear $name,<br><br>Thank you for taking the time to report an animal in need. We sincerely appreciate your concern and support for animal welfare. We regret to inform you that, despte our best efforts, we were unable to proceed with the rescue of the reported animal. Please know that your report is important to us, and we remain committed to responding to such case whenever possible<br><br>If you would like to know more about the reason or discuss the situation further, feel free to contact us directly: <br><br><b>Call or text us at:</b> 0995 427 4925<br><b>Message us on Facebook:</b> <a href=https://www.facebook.com/share/192zHGyWSs/>Supremo Furbabies Facebook Page</a><br><br>Warm Regards,<br><b>Supremo Furbabies Team</b>";
+
         sendmail($email, $name, $subject, $message);
 
         $_SESSION['errorMessage'] = "Rescue marked as not rescued.";
@@ -41,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submitPet'])) {
         exit();
     }
 
-    $namepet = $_POST['name']; 
+    $namepet = $_POST['name'];
     $gender = $_POST['gender'];
     $age = $_POST['age'];
     $description = $_POST['description'];
@@ -77,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submitPet'])) {
 
         // Send email for rescued
         $subject = "Rescue Status Update";
-        $message = "Hello $name,\n\nGood news! The animal you reported has been successfully rescued. Thank you for your report!";
+        $message = "Dear $name,<br><br>Good news! The animal you reported has been successfully rescued. We sincerely thank you for your concern and for taking the time to report the case.<br><br>Your support plays a vital role in helping us carry out our mission of rescuing and protecting animals in need.<br><br>If you have any further questions or would like to stay updated on this rescue, feel free to contact us directly.<br><br><b>Call or text us at:</b> 0995 427 4925<br><b>Message us on Facebook:</b> <a href=https://www.facebook.com/share/192zHGyWSs/>Supremo Furbabies Facebook Page</a><br><br>Warm Regards,<br><b>Supremo Furbabies Team</b>";
         sendmail($email, $name, $subject, $message);
 
         $_SESSION['errorMessage'] = "Pet and images saved successfully";

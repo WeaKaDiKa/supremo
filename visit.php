@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $liability = 1;
     $stmt->bind_param("isssisi", $userid, $schedule_date, $schedule_time, $visitType, $number_people, $comment, $liability);
     if ($stmt->execute()) {
-        $_SESSION['errorMessage'] = "Booking successful";
+        $_SESSION['errorMessage'] = "<h4>Your visit request has been submitted</h4><p><b>Your visit has not yet been scheduled.</b> We'll update you shortly through email to cofirm the date and time of your appointment and wrap up all the details. Thank you</p>";
         $_SESSION['errorType'] = "success";
         $_SESSION['errorHead'] = "Success!";
         header("Location: visit.php");
